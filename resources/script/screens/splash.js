@@ -19,6 +19,12 @@ class SplashScreen extends Screen{
 	}
 	
 	update(){
+		if (keyCode.enter in Ramu.lastKeysPressed){
+			Machine.changeState(Machine.STATE.TITLE);
+			this.update = null;
+			return;
+		}
+		
 		if (this.index >= this.imgs.length)
 			return;
 		

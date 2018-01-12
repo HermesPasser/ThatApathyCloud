@@ -12,7 +12,8 @@ function loadXML(filename){
 }
 
 var SOUND = {
-	HIT: 	   new Audio('resources/sound/hit.wav'),
+	SHOT: 	   new Audio('resources/sound/shot.wav'),
+	CHANGE_OP: new Audio('resources/sound/menusound.wav'),
 	DISAPPEAR: new Audio('resources/sound/disappear.wav')
 };
 

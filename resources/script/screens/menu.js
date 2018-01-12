@@ -1,49 +1,60 @@
 class MenuScreen extends Screen{
 	start(){
-		this.positions = [0, 80, 160]; // newGame option exit
-		this.currentPosition = this.positions[0];
+		this.position = 0;
 		
-		this.menu = new Sprite(RamuUtils.getImage("resources/sprite/title_menu.png"), 10, 10, 195, 24);
-		this.center(this.menu);
-		this.menu.y += 40;
+		this.titlescreen = new Sprite(RamuUtils.getImage("resources/sprite/title_screen.png"), 1, 1, 500, 500);
+		this.menu = [
+			new Spritesheet(BASIS.IMAGE, new Rect(200, 250, 194, 24), 1, 1, 194, 24),
+			new Spritesheet(BASIS.IMAGE, new Rect(200, 275, 194, 24), 1, 1, 194, 24),
+			new Spritesheet(BASIS.IMAGE, new Rect(200, 300, 194, 24), 1, 1, 194, 24)
+		];
 		
-		this.cursor = new Sprite(RamuUtils.getImage("resources/sprite/title_cursor.png"), 10, 10, 31, 24);
-		this.cursor.y += this.menu.y - this.cursor.height / 2;
-		this.setupCursor(this.currentPosition);		
+		for (let i = 0; i < this.menu.length; i++){
+			this.center(this.menu[i]);
+			this.menu[i].y += 40;
+		}
+		
+		this.setupCursor(0);		
 	}
-	
-	// ainda ta bugado
-	
-	setupCursor(){
-		this.cursor.x = this.menu.x - this.cursor.width / 2  + this.positions[this.currentPosition];
+		
+	setupCursor(position = 0){
+		SOUND.CHANGE_OP.play();
+		
+		for (let i = 0; i < this.menu.length; i++){
+			if (position == i)
+				this.menu[i].canDraw = true;
+			else
+				this.menu[i].canDraw = false;
+		}
 	}
 	
 	cursorLeft(){
-		this.currentPosition--;
+		this.position--;
 		
-		if (this.currentPosition <= 0)
-			this.currentPosition = 0;
+		if (this.position < 0)
+			this.position = 2;
 		
-		this.setupCursor();
+		this.setupCursor(this.position);
 	}
 	
 	cursorRight(){
-		this.currentPosition++;
+		this.position++;
 
-		if (this.currentPosition >= this.positions.length - 1)
-			this.currentPosition = this.positions.length - 1;
+		if (this.position > 2)
+			this.position = 0;
 		
-		this.setupCursor();
+		this.setupCursor(this.position);
 	}
 	
 	confirm(){
-		switch(this.currentPosition){
-			case this.positions[0]: // newGame
+		SOUND.CHANGE_OP.play();
+		switch(this.position){
+			case 0: // newGame
 				Machine.changeState(Machine.STATE.GAME);
 				break;
-			case this.positions[1]:	// option
+			case 1:	// option
 				break;
-			case this.positions[2]: // exit
+			case 2: // exit
 				break;
 		}
 	}
@@ -52,15 +63,18 @@ class MenuScreen extends Screen{
 		if (keyCode.enter in Ramu.lastKeysPressed)  	 this.confirm();
 		if (keyCode.left_arrow in Ramu.lastKeysPressed)  this.cursorLeft();
 		if (keyCode.right_arrow in Ramu.lastKeysPressed) this.cursorRight();
+		
+		Ramu.lastKeysPressed = [];
 	}
 	
 	update(){
-
+		this.input();
 	}
 	
 	destroy(){
-		this.menu.destroy();	
-		this.cursor.destroy();
+		for (let i = 0; i < this.menu.length; i++)
+			this.menu[i].destroy();
+		this.titlescreen.destroy();
 		super.destroy();
 	}
 }

@@ -25,7 +25,7 @@ class Bullet extends GameObj{
 	
 	start(){
 		super.start();
-		SOUND.HIT.play();
+		SOUND.SHOT.play();
 	}
 	
 	destroy(){

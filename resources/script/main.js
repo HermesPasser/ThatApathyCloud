@@ -1,4 +1,3 @@
-// var PLAYER = null//new Player(200,200);
 // aparentemente os colliders do tileset nao estao funcionando,
 
 // GameScreen.player = new Player(200,200);
@@ -11,7 +10,7 @@ new Machine();
 
 
 Ramu.init(500, 500);
-Ramu.debugMode = true;
+// Ramu.debugMode = true;
 
 if (Machine.CURRENT_STATE == Machine.STATE.GAME){
 	// ao inves disso criar classe que mostra texto e o texto some depois

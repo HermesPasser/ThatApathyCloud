@@ -26,10 +26,10 @@ class TeleportObject extends SimpleRectCollisor{
 			LOG_TEXT = "'space' to open.";
 			
 			if (keyCode.space in Ramu.pressedKeys){
-				world.refreshMap(World.maps[this.mapID]);
+				GameScreen.world.refreshMap(World.maps[this.mapID]);
 				
-				PLAYER.setX(this.position.x);
-				PLAYER.setY(this.position.y)	
+				GameScreen.player.setX(this.position.x);
+				GameScreen.player.setY(this.position.y)	
 				
 				Ramu.pressedKeys = [];
 				this.destroy();

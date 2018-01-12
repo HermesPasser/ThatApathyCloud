@@ -4,7 +4,7 @@ class Machine extends GameObj{
 			SPLASH: 0, TITLE: 1, GAME: 2, OVER: 4
 		};
 		
-		Machine.CURRENT_STATE = Machine.STATE.GAME;//SPLASH;
+		Machine.CURRENT_STATE = Machine.STATE.SPLASH;
 		Machine.machine();
 	}
 	
