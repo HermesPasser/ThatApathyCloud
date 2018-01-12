@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-up" width="10" height="10" tilewidth="50" tileheight="50" nextobjectid="2">
+ <tileset firstgid="1" source="basis.xml"/>
+ <layer name="Camada de Tiles 1" width="10" height="10">
+  <data encoding="csv">
+52,52,52,52,52,52,52,52,52,52,
+52,52,52,52,52,52,52,52,52,52,
+52,52,52,52,4,7,9,52,52,52,
+4,7,7,7,28,43,29,7,7,9,
+16,17,18,18,18,43,18,18,20,21,
+16,43,43,43,43,43,43,43,43,21,
+5,6,6,6,6,6,6,6,6,8,
+52,52,52,52,52,52,52,52,52,52,
+52,52,52,52,52,52,52,52,52,52,
+52,52,52,52,52,52,52,52,52,52
+</data>
+ </layer>
+ <objectgroup name="Camada de Objetos 1">
+  <object id="1" name="teleport" x="247" y="127" width="56" height="20">
+   <properties>
+    <property name="move" value="01,250,350"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
