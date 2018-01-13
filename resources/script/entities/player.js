@@ -47,7 +47,6 @@ class Player extends Entity{
 				animation = walking ? "upWalk" : "upStay"
 		}
 		
-		
 		if (!this.isInvisible)
 			this.setCurrentAnimation(animation);
 	}

@@ -9,6 +9,8 @@
 class Map{
 	constructor(xmlPath){
 		this.xml = loadXML(xmlPath);
+		// 0 - Below / 1 - Same
+		// 2 - Above / 3 - Restrictions (not draw)
 		this.grids = this.xml.getElementsByTagName("data");
 		this.objs = this.xml.getElementsByTagName("objectgroup");
 	}
@@ -73,15 +75,16 @@ class World extends GameObj{
 		this.spawnObjects();	
 	}
 	
+	/// setGrid will be called once in the init of this class
 	setGrid(){
 		// Create the grid
 		
-		this.grid = [ [], [], [] ];	
+		this.grid = [ [], [], [] ]; // lenght 3 bacause the 4rd layer data will not be draw
 		for (let l = 0; l < this.grid.length; l++){
 			for (let i = 0, x = 0, y = 0; i < BASIS.TILE_COUNT; x += BASIS.TILE_SIZE, i++){
 				if (x == Ramu.canvas.width)
 					x = 0, y += BASIS.TILE_SIZE;
-				
+
 				this.grid[l][i] = new Spritesheet(BASIS.IMAGE, new Rect(0,0,0,0), x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE)
 				this.grid[l][i].drawPriority = l; 
 				
@@ -94,11 +97,10 @@ class World extends GameObj{
 		Drawable.sortPriority();
 	}
 
-	spawnMap(){
-		// Add the spritesheet to the grid
-		
+	/// Add the tiles in the grid
+	spawnMap(){		
 		// For each layer
-		for (let dataLayer = 0; dataLayer < this.currentMap.grids.length; dataLayer++){
+		for (let dataLayer = 0; dataLayer < this.grid.length; dataLayer++){
 			let data = this.currentMap.grids[dataLayer].innerHTML.split(",");
 
 			// For each tile in layer
@@ -106,26 +108,36 @@ class World extends GameObj{
 				let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
 				
 				if (id == -1) continue;
-				
+								
 				// Get position of the tile using the ID
 				var sheetX = (id % (BASIS.IMAGE_WIDTH / BASIS.TILE_SIZE)) * BASIS.TILE_SIZE;
 				var sheetY = ~~(id / (BASIS.IMAGE_WIDTH / BASIS.TILE_SIZE)) * BASIS.TILE_SIZE;
-				
-				// Update grid image and position (0 = null, 2 = not passable)
-				if (id != 0 && id != 2)
+						
+				// Update grid image and position (0 = null)
+				if (id != 0)
 					this.grid[dataLayer][i].setSheet(new Rect(sheetX, sheetY, BASIS.TILE_SIZE, BASIS.TILE_SIZE));
 				else // Not draw
-					// this.grid[dataLayer][i].canDraw = false;
-				
-				// Not passable ID
-				if (id == 2){
-					this.grid[dataLayer][i].collisor.canCollide = true;
-					this.grid[dataLayer][i].collisor.tag = "wall";
-				}
-				
-				// console.log(getAttribute(BASIS.data, "tile", "id"))
-				// If tile is a wall
-				// this.grid[l][i].collisor.canCollide = false;
+					 this.grid[dataLayer][i].canDraw = false;
+			}
+		}
+
+		this.setRestrictions();
+	}
+	
+	setRestrictions(){
+		// tentar fazer isso no loop do metodo acima para economicar processamento
+		let data = this.currentMap.grids[3].innerHTML.split(",");
+
+		// For each tile in layer
+		for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
+			let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
+			
+			if (id == -1) continue;
+			
+			// Not passable ID
+			if (id == 2){
+				this.grid[2][i].collisor.canCollide = true;
+				this.grid[2][i].collisor.tag = "wall";
 			}
 		}	
 	}
@@ -154,4 +166,6 @@ class World extends GameObj{
 			}
 		}
 	}
+
+	
 }

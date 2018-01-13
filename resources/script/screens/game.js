@@ -1,9 +1,9 @@
 class GameScreen extends Screen{	
 	start(){
 		// The input in update must be called before the machineState in update of player
+		GameScreen.world = new World(0,0);
 		GameScreen.player = new Player(200,200);
 		GameScreen.player.updatePriority = this.updatePriority - 1;
-		GameScreen.world = new World(0,0);
 		GameObj.sortPriority();	
 	}
 	

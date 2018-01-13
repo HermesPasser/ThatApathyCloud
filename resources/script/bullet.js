@@ -1,14 +1,3 @@
-//------------------------------|
-// Layer	Priority			|
-//------------------------------|
-// 0		Below the character |
-// 1		Same as character   |
-// 2		Above the character |
-//------------------------------|
-
-const DIRECTION = {TOP: 0, LEFT: 1, RIGHT: 2, BOTTOM: 3};
-const LAYER = {BELOW: 0, SAME: 1, ABOVE: 2};
-
 // adicionar condicao para decidir se da dano no inimigo ou no player
 class Bullet extends GameObj{
 	constructor(x, y, direction){
@@ -19,6 +8,8 @@ class Bullet extends GameObj{
 				
 		this.coll = new SimpleRectCollisor(x, y, this.size, this.size);
 		this.sprite = new Spritesheet(BASIS.IMAGE, new Rect (50, 0, this.size, this.size), x, y, this.size, this.size);
+		this.sprite.drawPriority = LAYER.SAME;
+		Drawable.sortPriority();
 		
 		this.coll.tag = "shot";
 	}
@@ -65,49 +56,5 @@ class Bullet extends GameObj{
 		if (this.x < -this.size || this.x > Ramu.canvas.width ||
 			this.y < -this.size || this.y > Ramu.canvas.height)
 				this.destroy();
-	}
-}
-
-class Entity extends SpritesheetAnimator{
-	constructor(x, y, width, height){
-		super(x, y, width, height);
-		this.mainCol = new SimpleRectCollisor(x, y, width, height);
-		this.animDrawPriority = LAYER.SAME;
-		this.life = 100;
-	}
-
-	applyDamage(damage){
-		this.life -= 100;
-		
-		if (this.life <= 0)
-			this.die();
-	}
-	
-	die(){ } // virtual
-	
-	setX(x){
-		super.setX(x);
-		this.mainCol.x 	= x;
-	}
-	
-	setY(y){
-		super.setY(y);
-		this.mainCol.y  = y;
-	}	
-	
-	addX(x){
-		super.addX(x);
-		this.mainCol.x  += x;
-	}
-	
-	addY(y){
-		super.addY(y);
-		this.mainCol.y  += y;
-	}
-	
-	destroy(){
-		this.mainCol.destroy();
-		this.mainCol = null;
-		super.destroy();
 	}
 }
