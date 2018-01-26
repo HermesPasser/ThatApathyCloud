@@ -22,11 +22,16 @@ function loadXML(filename){
 const DIRECTION = {TOP: 0, LEFT: 1, RIGHT: 2, BOTTOM: 3};
 const LAYER = {BELOW: 0, SAME: 1, ABOVE: 2};
 
-var SOUND = {
+const SOUND = {
 	SHOT: 	   new Audio('resources/sound/shot.wav'),
 	CHANGE_OP: new Audio('resources/sound/menusound.wav'),
 	DISAPPEAR: new Audio('resources/sound/disappear.wav')
 };
+
+//remove
+SOUND.SHOT.volume = 0.1;
+SOUND.CHANGE_OP.volume = 0.1;
+SOUND.DISAPPEAR.volume = 0.1;
 
 const BASIS = (function(){
 	let data = loadXML("resources/tileset/basis.xml");

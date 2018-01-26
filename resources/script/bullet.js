@@ -1,12 +1,24 @@
-// adicionar condicao para decidir se da dano no inimigo ou no player
 class Bullet extends GameObj{
-	constructor(x, y, direction){
+	constructor(x, y, direction, damage = 100, damageTag){		
 		super(x,y);	
 		this.size = 7;
 		this.tag = "shot";
 		this.direction = direction;
+		this.damage = damage;
 				
 		this.coll = new SimpleRectCollisor(x, y, this.size, this.size);
+		this.coll.damageTag = damageTag;
+		this.coll.onCollision = function(){			
+			
+			// Add damage
+			for (var i = 0; i < this.collision.length; i++){
+				if (this.collision[i].tag === this.damageTag){
+					this.collision[i].applyDamage(this.damage);
+					this.destroy();	// Destroy the Bullet			
+				}
+			}
+		}
+				
 		this.sprite = new Spritesheet(BASIS.IMAGE, new Rect (50, 0, this.size, this.size), x, y, this.size, this.size);
 		this.sprite.drawPriority = LAYER.SAME;
 		Drawable.sortPriority();
@@ -25,7 +37,7 @@ class Bullet extends GameObj{
 		super.destroy();
 	}
 	
-	update(){
+	update(){		
 		var force = 120 * Ramu.time.delta;
 		var fx = 0, fy = 0;
 		
@@ -44,14 +56,7 @@ class Bullet extends GameObj{
 		this.coll.x += fx;
 		this.coll.y += fy; 
 
-		// Kill the enemy if collide
-		for (var i = 0; i < this.coll.collision.length; i++){
-			if (this.coll.collision[i].tag == "enemy"){
-				this.coll.collision[i].applyDamage(10);
-				this.destroy();					
-			}
-		}
-		
+	
 		// Destroy if is out of the canvas
 		if (this.x < -this.size || this.x > Ramu.canvas.width ||
 			this.y < -this.size || this.y > Ramu.canvas.height)

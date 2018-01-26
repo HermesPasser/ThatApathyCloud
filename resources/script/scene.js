@@ -72,7 +72,7 @@ class World extends GameObj{
 			this.mapObjs[i].destroy();
 		
 		this.mapObjs = [];
-		this.spawnObjects();	
+		this.spawnObjects();
 	}
 	
 	/// setGrid will be called once in the init of this class

@@ -8,8 +8,8 @@
 var gameObjs	   = [],
     objsToDraw 	   = [],
     objsToCollide  = [],
-	updateLastPriority 	= 0,
-    drawLastPriority	= 0,
+	updateLastPriority 	  = 0,
+    drawLastPriority	  = 0,
 	collisionLastPriority = 0;	
 	
 //{ Utils
@@ -266,7 +266,7 @@ class Drawable extends GameObj{
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.canDraw = true;
+		this.canDraw = canDraw;
 		this.drawPriority     = drawLastPriority++;
 		this.flipHorizontally = false;
 		this.flipVertically   = false;
@@ -302,7 +302,7 @@ class Drawable extends GameObj{
 		}
 	}
 	
-	drawInCanvas(){
+	drawInCanvas(){		
 		if (this.canDraw){
 
 			Ramu.ctx.globalAlpha = this.opacity;
@@ -333,7 +333,6 @@ class Collisor extends Drawable{
 		super(x, y, width, height);
 		if (arguments.length != 4) throw new Error('ArgumentError: Wrong number of arguments');
 		this.canCollide = true;
-		// this.isInCollision = false;
 		this.collision = [];
 		this.collisionPriority = collisionLastPriority++;
 
@@ -434,7 +433,6 @@ class Raycast extends Collisor{
 		this.velocityY = velocityY;
 		this.lifeTime = lifeTime;
 		this.currentTime = 0;
-		this.showWarn = true;
 		this.started = true;
 	}
 	
@@ -458,11 +456,6 @@ class Raycast extends Collisor{
 			this.currentTime += Ramu.time.delta;
 			this.x += this.velocityX * Ramu.time.delta;
 			this.y += this.velocityY * Ramu.time.delta;
-		}
-
-		if (Ramu.debugMode && this.showWarn && (this.x >= Ramu.canvas.width || this.y >= Ramu.canvas.height)){
-			console.warn("Cannot draw objects out of the Ramu.canvas.")
-			this.showWarn = false;
 		}
 	}
 	
@@ -758,7 +751,7 @@ class SpritesheetAnimator extends GameObj{
 	destroy(){
 		for (var key in this.anim){
 			this.anim[key].destroy();
-			this.anim[key] = null;
+			delete this.anim[key]; //= null;
 		}
 		this.anim = {};
 		super.destroy();
@@ -819,11 +812,11 @@ class Parallax extends GameObj{
 	
 	destroy(){
 		this.left.destroy();
-		this.left = null;
+		delete this.left; //= null;
 		this.center.destroy();
-		this.center = null;
+		delete this.center; //= null;
 		this.right.destroy();
-		this.right = null;
+		delete this.right; //= null;
 		super.destroy();
 	}
 }

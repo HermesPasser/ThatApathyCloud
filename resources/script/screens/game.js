@@ -4,9 +4,14 @@ class GameScreen extends Screen{
 		GameScreen.world = new World(0,0);
 		GameScreen.player = new Player(200,200);
 		GameScreen.player.updatePriority = this.updatePriority - 1;
+				
+		// precisa ser adicionado pelo spawn objs
+		GameScreen.emtest = new Enemy(200, 250);
+		
+		
 		GameObj.sortPriority();	
 	}
-	
+
 	update(){
 		this.input();
 	}
