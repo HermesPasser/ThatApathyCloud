@@ -1,10 +1,10 @@
 class Machine extends GameObj{
 	start(){
 		Machine.STATE = {
-			SPLASH: 0, TITLE: 1, GAME: 2, OVER: 4
+			SPLASH: 0, TITLE: 1, INTRO: 2, GAME: 3, OVER: 4
 		};
 		
-		Machine.CURRENT_STATE = Machine.STATE.GAME//SPLASH;
+		Machine.CURRENT_STATE = Machine.STATE.INTRO//SPLASH;
 		Machine.machine();
 	}
 	
@@ -20,7 +20,10 @@ class Machine extends GameObj{
 				Machine.currentScreen = new SplashScreen();
 				break;
 			case Machine.STATE.TITLE:
-				Machine.currentScreen = new MenuScreen();
+				Machine.currentScreen = new TitleScreen();
+				break;
+			case Machine.STATE.INTRO:
+				Machine.currentScreen = new IntroScreen();
 				break;
 			case Machine.STATE.GAME:
 				Machine.currentScreen = new GameScreen();

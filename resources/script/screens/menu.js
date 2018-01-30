@@ -1,4 +1,4 @@
-class MenuScreen extends Screen{
+class TitleScreen extends Screen{
 	start(){
 		this.position = 0;
 		
@@ -50,7 +50,7 @@ class MenuScreen extends Screen{
 		SOUND.CHANGE_OP.play();
 		switch(this.position){
 			case 0: // newGame
-				Machine.changeState(Machine.STATE.GAME);
+				Machine.changeState(Machine.STATE.INTRO);
 				break;
 			case 1:	// option
 				break;
@@ -75,6 +75,8 @@ class MenuScreen extends Screen{
 		for (let i = 0; i < this.menu.length; i++)
 			this.menu[i].destroy();
 		this.titlescreen.destroy();
+		
+		delete this.titlescreen;
 		super.destroy();
 	}
 }

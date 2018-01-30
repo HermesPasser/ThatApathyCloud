@@ -156,6 +156,7 @@ class Ramu{
 				let numUpdateSteps = 0;
 				if (++numUpdateSteps >= 240) {
 					Ramu.time.frameTime = 0;
+					console.warn("Panic.")
 					break;
 				}
 			}
@@ -204,8 +205,10 @@ class Ramu{
 			let positionWidth = objsToDraw[i].x + objsToDraw[i].width;		
 			let positionHeigh = objsToDraw[i].y + objsToDraw[i].height;
 			
-			if (positionWidth >= 0 && objsToDraw[i].x <= Ramu.canvas.width && // Renderiza somente o que esta no Ramu.canvas
-					positionHeigh>= 0 && objsToDraw[i].y <= Ramu.canvas.height)
+			let isOutOfCanvas = positionWidth >= 0 && objsToDraw[i].x <= Ramu.canvas.width &&
+								positionHeigh >= 0 && objsToDraw[i].y <= Ramu.canvas.height // Renderiza somente o que esta no Ramu.canvas
+			
+			if (objsToDraw[i].drawOutOfCanvas || isOutOfCanvas)
 				objsToDraw[i].drawInCanvas();
 		}
 	}
@@ -270,8 +273,8 @@ class Drawable extends GameObj{
 		this.drawPriority     = drawLastPriority++;
 		this.flipHorizontally = false;
 		this.flipVertically   = false;
+		this.drawOutOfCanvas  = false;
 		this.opacity = 1;
-		
 		Drawable.addObjt(this)
 	}
 	
@@ -818,6 +821,66 @@ class Parallax extends GameObj{
 		this.right.destroy();
 		delete this.right; //= null;
 		super.destroy();
+	}
+}
+
+class Text extends Drawable {
+	constructor(text, x, y, maxWidth, lineHeight = 25){
+		super(x, y, 1, 1, true);
+		this.text = text;
+		this.maxWidth = maxWidth;
+		this.lineHeight = lineHeight;
+		
+		this.font = Ramu.ctx.font;
+		this.fillStyle = Ramu.ctx.fillStyle;
+		
+		this.drawOutOfCanvas = true;
+	}
+	
+	start(){
+		this.setUp();
+	}
+	
+	// Adapted from www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial
+	draw(){
+		let y = this.y, testWidth = 0;
+		let line = '', testLine = '', metrics = null;
+		
+		let oldFont = Ramu.ctx.font;
+		let oldStyle = Ramu.ctx.fillStyle;
+		
+		Ramu.ctx.font = this.font;
+		Ramu.ctx.fillStyle = this.fillStyle;
+		
+		for(var n = 0; n < this._words.length; n++) {
+			testLine = line + this._words[n] + ' ';
+			metrics = Ramu.ctx.measureText(testLine);			
+			testWidth = metrics.width;
+			
+			if (this._words[n] == "\\n"){
+				Ramu.ctx.fillText(line, this.x, y);
+				line = '';
+				y += this.lineHeight;
+				
+			}
+			
+			else if (testWidth > this.maxWidth && n > 0) {
+				Ramu.ctx.fillText(line, this.x, y);
+				line = this._words[n] + ' ';
+				y += this.lineHeight;
+			}
+			else {
+				line = testLine;
+			}
+		}
+		
+		Ramu.ctx.fillText(line, this.x, y);
+		Ramu.ctx.font = oldFont;
+		Ramu.ctx.fillStyle = oldStyle;
+	}
+	
+	setUp(){
+		this._words = this.text.replace(/\n/g, " \\n ").split(' ');
 	}
 }
 
