@@ -2,21 +2,28 @@
 // ta aparecendo a msg de mudar de mapa quando o tiro acerta o teleporte
 // mesmo que eu tenha botado para aparecer so se a tag for player
 
-new Machine();
+
+
+// convem botar um "loading" entre as screens
+
+
+// tests
+new SimpleRectCollisor(1, 1, 500, 10).tag = "wall";
+new SimpleRectCollisor(1, 12, 10, 475).tag = "wall";
+new SimpleRectCollisor(490, 12, 10, 475).tag = "wall";
+new SimpleRectCollisor(1, 490, 500, 10).tag = "wall";
+new SimpleRectCollisor(300, 220, 50, 200).tag = "wall";
 
 Ramu.init(500, 500);
 // Ramu.debugMode = true;
 
-// if (Machine.CURRENT_STATE == Machine.STATE.GAME){
-	// ao inves disso criar classe que mostra texto e o texto some depois
-	var LOG_TEXT = "";
-	// var LOG = new Drawable(0,0,0,0);
-	// LOG.drawPriority = 100;
-	// LOG.tag = "LOG"
-	// LOG.draw = function(){
-		// Ramu.ctx.fillStyle = "red";
-		// Ramu.ctx.font = "30px Arial";
-		// Ramu.ctx.fillText("olalal", 0, 50);
-		// LOG_TEXT = "";
-	// }
-// }
+new Machine();
+
+// boundary tests
+// SOUND.SHOT.volume = 0.1;
+// SOUND.GAME.volume = 0.4;
+// SOUND.CHANGE_OP.volume = 0.1;
+// SOUND.DISAPPEAR.volume = 0.1;
+
+//remove
+var LOG_TEXT = "";

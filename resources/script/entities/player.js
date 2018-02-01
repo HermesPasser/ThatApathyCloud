@@ -4,10 +4,6 @@ class Player extends CharacterBase{
 			
 		this.mainCol.tag = "player";
 		
-		// 		Shot
-		this.timeToShot = 0.5;
-		this.currentTimeToShot = this.timeToShot;
-		
 		// 		Disappear
 		
 		// Time to can become visible again
@@ -83,11 +79,16 @@ class Player extends CharacterBase{
 			this.currentTimeToBecomeVisible += Ramu.time.delta;
 			
 			if (this.currentTimeToBecomeVisible >= this.timeToBecomeVisible){
-				this.setCanDraw(true);
+				if (this.life > 0)
+					this.setCanDraw(true);
+
 				this.isInvisible = false
 				this.currentTimeToBecomeVisible = 0;
 			}
 		}
+		
+		if (this.life <= 0)
+			this.setCanDraw(false);
 	}
 	
 	walkUp(){
@@ -131,6 +132,11 @@ class Player extends CharacterBase{
 	}
 	
 	die(){
+		// não esquecer de dar um jeito de destruir isso
+		let txt = new Text("Game Over", 250, 250, 100);
+		txt.fillStyle = "white";	
+
+		
 		// a segunda vez que instancio o player, ele não roda as animações
 		// então no lugar de destruir o player e instancia-lo denovo, 
 		// resetar os valores

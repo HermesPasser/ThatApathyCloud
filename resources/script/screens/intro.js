@@ -1,23 +1,28 @@
 class IntroScreen extends Screen{
-	start(){
+	start(){		
 		// alterar o txt
-		this.text = "Depois de conquistar o espaço, os humanos se viram espalhados entre diversos planetas. Nosso protagonista é um terrorista enviado por um planeta para erradicar a uma espécie hibrida de seres humanos que vivem num planeta distante e que a pouco conquistaram \"direitos humanos\". Para isso, nosso personagem, entrará no planeta por um espaçoporto e plantará uma ogiva no mesmo para concretizar seu apático objetivo junto com sua vida.\nOs finais planejados são: ele planta a objetivo e compre seu vil objetivo não deixando mais nada do que aquela nuvem nuclerar trazida pela apatia e um onde ele arrepende-se e suisida-se."
+		this.text = 'A humanidade conquistou o espaço diminuiu consideravelmente a miscigenação entre os povos, dentre esses povos, os habitantes de K’uh adaptaram-se consideravelmente ao ambiente hostil tornando-se quase uma especial a parte ao olhar de um desapercebido.  Os K’uh, sendo uma pequena colônia no fim da galáxia, nunca precisaram se preocupar com tais olhares. Isto é, até decidirem declarar independência.';
 		
 		this.txt = new Text(this.text, 1, Ramu.canvas.height, 500);
 		this.txt.fillStyle = "white";	
-		// play the music here.
 		
+		SOUND.GAME.play();
 	}
 	
 	update(){
 		if (this.txt.y < -100){
-			// faz alguma coisa como mostrar uma arte
+			// mostrar logo aqui
 			
+			// dar fade out no logo
+			
+			// tocar a musica em game
+			
+			// change state
 			Machine.changeState(Machine.STATE.GAME);
 			return;
 		}
 		
-		this.txt.y -= 50 * Ramu.time.delta;
+		this.txt.y -= 45 * Ramu.time.delta;
 	}
 	
 	destroy(){

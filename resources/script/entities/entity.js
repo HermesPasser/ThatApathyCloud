@@ -50,6 +50,10 @@ class CharacterBase extends Entity{
 		this.canPass = true;
 		this.isEnemy = false;
 		
+		// Shot
+		this.timeToShot = 0.5;
+		this.currentTimeToShot = this.timeToShot;
+		
 		// To collide with enemies
 		let ref = this;
 		this.mainCol.applyDamage = function(damage){
@@ -90,7 +94,7 @@ class CharacterBase extends Entity{
 		switch (this.currentDirection){
 			case DIRECTION.TOP:
 				ox += this.width/2;
-				oy += this.height/2;
+				oy += this.height/2 - 30;
 				dy -= vel; 
 				break;
 			case DIRECTION.LEFT:

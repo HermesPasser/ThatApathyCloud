@@ -11,7 +11,7 @@ var gameObjs	   = [],
 	updateLastPriority 	  = 0,
     drawLastPriority	  = 0,
 	collisionLastPriority = 0;	
-	
+
 //{ Utils
 
 const keyCode = {
@@ -54,6 +54,12 @@ class RamuMath{
 		throw new Error('This is a static class');
 	}
 	
+	static distance(gameObjectA, gameObjectB){
+		let x = Math.pow(gameObjectA.x - gameObjectB.x, 2),
+			y = Math.pow(gameObjectA.y - gameObjectB.y, 2);
+		return Math.sqrt(x + y, 2);
+	}
+	
 	static overlap(rect1, rect2) {
 		return(rect1.x < rect2.x + rect2.width &&
 			   rect1.x + rect1.width > rect2.x &&
@@ -78,6 +84,11 @@ class RamuUtils{
 	static imageIsLoaded(img){
 		if (!(img instanceof Image)) return false;
 		return img.complete && img.naturalWidth !== 0 && img.naturalHeight !== 0;
+	}
+		
+	static isOutOfCanvas(gameObject){
+		return gameObject.x < 0 || gameObject.x > Ramu.canvas.width ||
+			   gameObject.y < 0 || gameObject.y > Ramu.canvas.height;
 	}
 	
 	static CustomTypeError(instance, classToCompare){
@@ -186,14 +197,20 @@ class Ramu{
 	
 	/// Update all gameObjs in the game.
 	static update(){
-		for (var i = 0; i < gameObjs.length; i++)
+		for (var i = 0; i < gameObjs.length; i++){
+			if (!gameObjs[i]._start_was_called)
+				continue;
 			gameObjs[i].update();	
+		}
 	}
 	
 	/// Check all collisions in the game.
 	static checkCollision(){
-		for (var i = 0; i < objsToCollide.length; i++)
+		for (var i = 0; i < objsToCollide.length; i++){
+			if (!gameObjs[i]._start_was_called)
+				continue;
 			objsToCollide[i].checkCollision();
+		}
 	}
 	
 	/// Executes all draw methods of all gameObjs in the game.
@@ -202,6 +219,9 @@ class Ramu{
 		Ramu.ctx.clearRect(0, 0, Ramu.canvas.width, Ramu.canvas.height);
 		
 		for (var i = 0; i < objsToDraw.length; i++){
+			if (!gameObjs[i]._start_was_called)
+				continue;
+			
 			let positionWidth = objsToDraw[i].x + objsToDraw[i].width;		
 			let positionHeigh = objsToDraw[i].y + objsToDraw[i].height;
 			
@@ -550,7 +570,7 @@ class Spritesheet extends Drawable{
 /// Displays an animation that uses various images
 class SpriteAnimation extends Drawable{
 	constructor(x, y, width, height){
-		super(x, y, width, height);
+		super(x, y, width, height, true);
 		if (arguments.length != 4) throw new Error('ArgumentError: Wrong number of arguments');
 		this.frames 		 = [];
 		this.currentFrame 	 = 0;
@@ -660,7 +680,7 @@ class SpritesheetAnimation extends SpriteAnimation{
 /// Control SpritesheetAnimations
 class SpritesheetAnimator extends GameObj{
 	constructor(x, y, width, height){
-		super(x,y,width,height);
+		super(x, y, width, height);
 		if (arguments.length != 4) throw new Error('ArgumentError: Wrong number of arguments');
 		
 		this.anim = {};
@@ -838,7 +858,7 @@ class Text extends Drawable {
 	}
 	
 	start(){
-		this.setUp();
+		// this.setUp();
 	}
 	
 	// Adapted from www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial
@@ -852,6 +872,8 @@ class Text extends Drawable {
 		Ramu.ctx.font = this.font;
 		Ramu.ctx.fillStyle = this.fillStyle;
 		
+		this._words = this.text.replace(/\n/g, " \\n ").split(' ');
+		
 		for(var n = 0; n < this._words.length; n++) {
 			testLine = line + this._words[n] + ' ';
 			metrics = Ramu.ctx.measureText(testLine);			
@@ -863,7 +885,6 @@ class Text extends Drawable {
 				y += this.lineHeight;
 				
 			}
-			
 			else if (testWidth > this.maxWidth && n > 0) {
 				Ramu.ctx.fillText(line, this.x, y);
 				line = this._words[n] + ' ';
@@ -879,9 +900,9 @@ class Text extends Drawable {
 		Ramu.ctx.fillStyle = oldStyle;
 	}
 	
-	setUp(){
-		this._words = this.text.replace(/\n/g, " \\n ").split(' ');
-	}
+	// setUp(){
+		// this._words = this.text.replace(/\n/g, " \\n ").split(' ');
+	// }
 }
 
 //}

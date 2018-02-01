@@ -1,6 +1,7 @@
 class DisappearSFX extends SpritesheetAnimation{
 	constructor(x, y){
 		super(BASIS.IMAGE, x, y, 50, 50);
+
 		this.animationTime = 0.2;
 		this.playInLoop = false;
 		

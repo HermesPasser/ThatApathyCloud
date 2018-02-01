@@ -6,8 +6,7 @@ class GameScreen extends Screen{
 		GameScreen.player.updatePriority = this.updatePriority - 1;
 				
 		// precisa ser adicionado pelo spawn objs
-		GameScreen.emtest = new Enemy(200, 250);
-		
+		GameScreen.emtest = new Enemy(450, 450);
 		
 		GameObj.sortPriority();	
 	}
