@@ -905,5 +905,63 @@ class Text extends Drawable {
 	// }
 }
 
+class SimpleParticle extends GameObj{
+	constructor(img, rect, lifeSpan, particleNumber){
+		super(rect.x, rect.y, rect.width, rect.height);
+		this.particleNumber = particleNumber / 2;
+		this.particle = img;
+		this.lifeSpan = lifeSpan;
+	}
+	
+	start(){		
+		this.particles = [];
+		
+		for (let i = 0; i < 200; i++)
+			this.particles[i] = new Sprite(this.particle, this.x, this.y, this.width, this.height);
+		
+		this.currentLife = 0;
+		this.isOver = false;
+	}
+	
+	update(){
+		if (this.isOver)
+			return;
+		
+		this.currentTimeToFall >= this.currentLife / 2 ? this.move(this.particleNumber) : this.move(this.particleNumber / 2);
+		this.currentLife += Ramu.time.delta;
+		
+		if (this.currentLife > this.lifeSpan){
+			for (let i = 0; i < this.particles.length ; i++)
+				this.particles[i].opacity -= 0.1;
+		}
+		
+		if (this.particles[0].opacity <= 0){
+			this.isOver = true;
+			this.destroy();
+		}
+	}
+	
+	destroy(){
+		for (let i = 0; i < this.particles.length ; i++){
+			this.particles[i].destroy();
+			delete this.particles[i];
+		}
+		super.destroy();
+	}
+	
+	random(max, min){
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	move(vel){
+		for (let i = 0; i < this.particles.length ; i++){
+			let x = this.random(-vel, vel);
+			let y = this.random(-vel, vel);
+			this.particles[i].x += x * Ramu.time.delta;
+			this.particles[i].y += y * Ramu.time.delta;
+		}	
+	}
+}
+
 //}
 

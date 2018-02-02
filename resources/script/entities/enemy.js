@@ -53,6 +53,10 @@ class Enemy extends CharacterBase{
 		this.currentDirection = DIRECTION.BOTTOM;
 	}
 	
+	getDamage(){
+		return 40;
+	}
+	
 	move(){
 		if (!this.canPass)
 			return;
@@ -134,9 +138,8 @@ class Enemy extends CharacterBase{
 		this.currentTimeToShot += Ramu.time.delta;
 	}
 	
-	die(){
-		// spawn something like blood or play a shout?
-		
+	die(){		
+		new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1, 1000), 3);
 		this.setCanDraw(false);
 		this.mainCol.destroy()
 		this.destroy();

@@ -23,7 +23,8 @@ class Player extends CharacterBase{
 	
 	disappear(){		
 		if (this.currentTimeToDisappear >= this.timeToDisappear){
-			new DisappearSFX(this.x - 10 , this.y);
+			SOUND.DISAPPEAR.play();
+			new SimpleParticle(PARTICLE_IMAGE.BLUE, new Rect(this.x, this.y, 1, 1), 2, 500);
 			this.currentTimeToDisappear = 0;
 			this.setCanDraw(false);
 			this.isInvisible = true;
@@ -123,10 +124,14 @@ class Player extends CharacterBase{
 			this.addY(this.vel * Ramu.time.delta);
 	}
 	
+	getDamage(){
+		return 100;
+	}
+	
 	applyDamage(damage){
 		// If is not invisible then apply the damage
 		if (!this.isInvisible){
-			// damage animation here
+			new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1), 3, 1000);
 			super.applyDamage(damage);
 		}
 	}
@@ -141,8 +146,8 @@ class Player extends CharacterBase{
 		// então no lugar de destruir o player e instancia-lo denovo, 
 		// resetar os valores
 		
-		console.log("player dead")
-		// tocar animações e chamar a tela de game over aqui
+		new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1), 3, 1000);
+		super.destroy();
 		
 	}
 	
@@ -151,6 +156,7 @@ class Player extends CharacterBase{
 		this.currentTimeToDisappear 	= this.timeToDisappear;
 		this.currentTimeToBecomeVisible = 0;
 		this.setCurrentAnimation("downStay");
+		this.setCanDraw(true);
 		this.life = 100;
 		
 		// reset position // valores provisorios

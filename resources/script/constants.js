@@ -24,10 +24,16 @@ const LAYER = {BELOW: 0, SAME: 1, ABOVE: 2};
 
 const SOUND = {
 	SHOT: 	   new Audio('resources/sound/shot.wav'),
+	// SCREAM: 	   new Audio('resources/sound/.wav'),
 	GAME:	   new Audio('resources/sound/gamemusic.wav'),
 	CHANGE_OP: new Audio('resources/sound/menusound.wav'),
 	DISAPPEAR: new Audio('resources/sound/disappear.wav')
 };
+
+const PARTICLE_IMAGE = {
+	BLOOD: RamuUtils.getImage("resources/sprite/particlered.png"),
+	BLUE: RamuUtils.getImage("resources/sprite/particleblue.png")
+} 
 
 const BASIS = (function(){
 	let data = loadXML("resources/tileset/basis.xml");

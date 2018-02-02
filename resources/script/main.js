@@ -7,19 +7,21 @@
 // convem botar um "loading" entre as screens
 
 
-// tests
-new SimpleRectCollisor(1, 1, 500, 10).tag = "wall";
-new SimpleRectCollisor(1, 12, 10, 475).tag = "wall";
-new SimpleRectCollisor(490, 12, 10, 475).tag = "wall";
-new SimpleRectCollisor(1, 490, 500, 10).tag = "wall";
-new SimpleRectCollisor(300, 220, 50, 200).tag = "wall";
+// bondary tests
+// new SimpleRectCollisor(1, 1, 500, 10).tag = "wall";
+// new SimpleRectCollisor(1, 12, 10, 475).tag = "wall";
+// new SimpleRectCollisor(490, 12, 10, 475).tag = "wall";
+// new SimpleRectCollisor(1, 490, 500, 10).tag = "wall";
+// new SimpleRectCollisor(300, 220, 50, 200).tag = "wall";
+
 
 Ramu.init(500, 500);
+
 // Ramu.debugMode = true;
 
 new Machine();
 
-// boundary tests
+// sound
 // SOUND.SHOT.volume = 0.1;
 // SOUND.GAME.volume = 0.4;
 // SOUND.CHANGE_OP.volume = 0.1;

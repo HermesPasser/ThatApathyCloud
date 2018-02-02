@@ -6,7 +6,7 @@ class GameScreen extends Screen{
 		GameScreen.player.updatePriority = this.updatePriority - 1;
 				
 		// precisa ser adicionado pelo spawn objs
-		GameScreen.emtest = new Enemy(450, 450);
+		GameScreen.emtest = new Enemy(200, 250);
 		
 		GameObj.sortPriority();	
 	}
@@ -16,6 +16,9 @@ class GameScreen extends Screen{
 	}
 	
 	input(){
+		if (GameScreen.player.life <= 0)
+			return;
+		
 		if (keyCode.up_arrow in Ramu.pressedKeys)    GameScreen.player.walkUp();
 		if (keyCode.left_arrow in Ramu.pressedKeys)  GameScreen.player.walkLeft();
 		if (keyCode.right_arrow in Ramu.pressedKeys) GameScreen.player.walkRight();

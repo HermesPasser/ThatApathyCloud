@@ -1,23 +1,25 @@
 class IntroScreen extends Screen{
-	start(){		
-		// alterar o txt
-		this.text = 'A humanidade conquistou o espaço diminuiu consideravelmente a miscigenação entre os povos, dentre esses povos, os habitantes de K’uh adaptaram-se consideravelmente ao ambiente hostil tornando-se quase uma especial a parte ao olhar de um desapercebido.  Os K’uh, sendo uma pequena colônia no fim da galáxia, nunca precisaram se preocupar com tais olhares. Isto é, até decidirem declarar independência.';
+	constructor(isIntro = true){
+		super(0,0);
 		
-		this.txt = new Text(this.text, 1, Ramu.canvas.height, 500);
+		let intro = 'A humanidade conquistou o espaço diminuiu consideravelmente a miscigenação entre os povos, dentre esses povos, os habitantes de K’uh adaptaram-se consideravelmente ao ambiente hostil tornando-se quase uma especial a parte ao olhar de um desapercebido.  Os K’uh, sendo uma pequena colônia no fim da galáxia, nunca precisaram se preocupar com tais olhares. Isto é, até decidirem declarar independência.';
+		let credits = 'Programming \nDouglas Silva "Hermes Passer" Lacerda \n\nGraphics \nDouglas Silva "Hermes Passer" Lacerda \n\nSound \nDouglas Silva "Hermes Passer" Lacerda \n\nMusic \n...\n \n A Hermes Passer game.\n gladiocitrico.blogspot.com \n hermespasser.github.io'
+		
+		this.text = isIntro ? intro : credits;
+		this.duration = isIntro ? 100 : 300;
+		this.isIntro = isIntro;
+	}
+	
+	start(){
+		let posX = this.isIntro ? 1 : Ramu.canvas.width / 2 - 40;
+		this.txt = new Text(this.text, posX, Ramu.canvas.height, 500);
 		this.txt.fillStyle = "white";	
-		
-		SOUND.GAME.play();
+		if (this.isIntro)
+			SOUND.GAME.play();
 	}
 	
 	update(){
-		if (this.txt.y < -100){
-			// mostrar logo aqui
-			
-			// dar fade out no logo
-			
-			// tocar a musica em game
-			
-			// change state
+		if (this.txt.y < -this.duration){
 			Machine.changeState(Machine.STATE.GAME);
 			return;
 		}

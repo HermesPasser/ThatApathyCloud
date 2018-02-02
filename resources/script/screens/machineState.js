@@ -4,7 +4,7 @@ class Machine extends GameObj{
 			SPLASH: 0, TITLE: 1, INTRO: 2, GAME: 3, OVER: 4
 		};
 		
-		Machine.CURRENT_STATE = Machine.STATE.GAME//SPLASH;
+		Machine.CURRENT_STATE = Machine.STATE.INTRO//SPLASH;
 		Machine.machine();
 	}
 	
@@ -29,7 +29,7 @@ class Machine extends GameObj{
 				Machine.currentScreen = new GameScreen();
 				break
 			case Machine.STATE.OVER:
-			
+				// Machine.currentScreen = new IntroScreen(false);
 				break;	
 		}	
 	}

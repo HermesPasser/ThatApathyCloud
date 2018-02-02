@@ -1,1 +1,1 @@
-Uses Ramu avaliable at [ramu webpage](https://hermespasser.github.io/pages/ramu.html).
+Uses Ramu version 0.6 avaliable at [ramu webpage](https://hermespasser.github.io/pages/ramu.html).
