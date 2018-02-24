@@ -3,7 +3,7 @@ class IntroScreen extends Screen{
 		super(0,0);
 		
 		let intro = 'A humanidade conquistou o espaço diminuiu consideravelmente a miscigenação entre os povos, dentre esses povos, os habitantes de K’uh adaptaram-se consideravelmente ao ambiente hostil tornando-se quase uma especial a parte ao olhar de um desapercebido.  Os K’uh, sendo uma pequena colônia no fim da galáxia, nunca precisaram se preocupar com tais olhares. Isto é, até decidirem declarar independência.';
-		let credits = 'Programming \nDouglas Silva "Hermes Passer" Lacerda \n\nGraphics \nDouglas Silva "Hermes Passer" Lacerda \n\nSound \nDouglas Silva "Hermes Passer" Lacerda \n\nMusic \n...\n \n A Hermes Passer game.\n gladiocitrico.blogspot.com \n hermespasser.github.io'
+		let credits = 'Programming \nDouglas Silva "Hermes Passer" Lacerda \n\nGraphics \nDouglas Silva "Hermes Passer" Lacerda \n\nSound \nDouglas Silva "Hermes Passer" Lacerda \n\n Dubbing \nThomas Daniel \n\nMusic \n...\n \n An Hermes Passer game.\n gladiocitrico.blogspot.com \n hermespasser.github.io \n source code at \n github.com/HermesPasser/ThatApathyCloud'
 		
 		this.text = isIntro ? intro : credits;
 		this.duration = isIntro ? 100 : 300;

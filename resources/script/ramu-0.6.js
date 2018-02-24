@@ -439,7 +439,7 @@ class SimpleRectCollisor extends Collisor{
 class Raycast extends Collisor{
 	constructor(){
 		super(1, 1, 1, 1);
-		this.started  = false;
+		this.started = false;
 		this.abord();
 	}
 
@@ -448,6 +448,10 @@ class Raycast extends Collisor{
 	init(initX, initY, velocityX, velocityY, lifeTime){
 		if (arguments.length != 5) throw new Error('ArgumentError: Wrong number of arguments');
 
+		// To call onRaycastEnd when was aborted
+		if (this.started)
+			this.onRaycastEnd();
+		
 		this.x = initX;
 		this.y = initY;
 		this.initX = initX;
@@ -582,6 +586,21 @@ class SpriteAnimation extends Drawable{
 	}
 	
 	addFrame(img){ 
+		// Kawthar
+		// if(void 0 === img || arguments.length != 1)
+		// throw new Error();
+
+		// if(Array.isArray(img)){
+		// for (let i = 0; i < img[i]; i++) 
+			// this.frames.push(img);
+		// return;
+		// } else if(img instanceof Image){
+		// this.frames.push(img);
+		// return;
+		// }
+
+		//Argumento ou não é array ou não é uma instância de Image
+		// throw RamuUtils.CustomTypeError(img, Image);
 		if (arguments.length != 1) throw new Error('ArgumentError: Wrong number of arguments');
 		if (!(img instanceof Image)) throw RamuUtils.CustomTypeError(img, Image);
 		
@@ -910,35 +929,63 @@ class SimpleParticle extends GameObj{
 		super(rect.x, rect.y, rect.width, rect.height);
 		this.particleNumber = particleNumber / 2;
 		this.particle = img;
+		this.destroyOnEnd = false;
 		this.lifeSpan = lifeSpan;
 	}
 	
 	start(){		
 		this.particles = [];
-		
+		this.isOver = true
 		for (let i = 0; i < 200; i++)
-			this.particles[i] = new Sprite(this.particle, this.x, this.y, this.width, this.height);
-		
+			this.particles[i] = new Sprite(this.particle, this.x, this.y, this.width, this.height, false);
+	}
+	
+	init(){
+		for (let i = 0; i < this.particles.length ; i++){
+			this.particles[i].canDraw = true;
+			this.particles[i].opacity = 1;
+		}
+
+		this.currentTimeToFall = 0;
 		this.currentLife = 0;
-		this.isOver = false;
+		this.isOver = false;		
+	}
+	
+	setPosition(x, y){
+		this.x = x;
+		this.y = y;
+		
+		// if (this.isOver)
+		this.resetPosition();
 	}
 	
 	update(){
 		if (this.isOver)
 			return;
-		
+				
 		this.currentTimeToFall >= this.currentLife / 2 ? this.move(this.particleNumber) : this.move(this.particleNumber / 2);
 		this.currentLife += Ramu.time.delta;
 		
 		if (this.currentLife > this.lifeSpan){
 			for (let i = 0; i < this.particles.length ; i++)
-				this.particles[i].opacity -= 0.1;
+				this.particles[i].opacity -= 0.07;
 		}
 		
 		if (this.particles[0].opacity <= 0){
 			this.isOver = true;
-			this.destroy();
+			
+			if (this.destroyOnEnd)
+				this.destroy();
+			else this.resetPosition();
 		}
+	}
+	
+	resetPosition(){
+		for (let i = 0; i < this.particles.length ; i++){
+			this.particles[i].x = this.x;
+			this.particles[i].y = this.y;			
+			this.particles[i].canDraw = false;
+		}	
 	}
 	
 	destroy(){

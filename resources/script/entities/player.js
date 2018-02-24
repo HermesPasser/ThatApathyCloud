@@ -3,17 +3,18 @@ class Player extends CharacterBase{
 		super(x, y, 36, 50);
 			
 		this.mainCol.tag = "player";
-		
-		// 		Disappear
-		
-		// Time to can become visible again
+				
+		// Disappear - Time to can become visible again
 		this.timeToDisappear = 2;
 		this.currentTimeToDisappear = this.timeToDisappear;
 		
-		// Time to become visible
+		// Disappear - Time to become visible
 		this.timeToBecomeVisible = 2;
 		this.currentTimeToBecomeVisible = 0;
 		
+		// Particles
+		this.disappearParticle = new SimpleParticle(PARTICLE_IMAGE.BLUE, new Rect(1, 1, 1, 1), 2, disappearParticleNumber);
+
 		this.isInvisible = false;
 	}
 	
@@ -24,7 +25,10 @@ class Player extends CharacterBase{
 	disappear(){		
 		if (this.currentTimeToDisappear >= this.timeToDisappear){
 			SOUND.DISAPPEAR.play();
-			new SimpleParticle(PARTICLE_IMAGE.BLUE, new Rect(this.x, this.y, 1, 1), 2, 500);
+			
+			this.disappearParticle.setPosition(this.x + this.width/2, this.y + this.height/2);
+			this.disappearParticle.init();
+			
 			this.currentTimeToDisappear = 0;
 			this.setCanDraw(false);
 			this.isInvisible = true;
@@ -131,13 +135,14 @@ class Player extends CharacterBase{
 	applyDamage(damage){
 		// If is not invisible then apply the damage
 		if (!this.isInvisible){
-			new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1), 3, 1000);
+			this.showBlood();
 			super.applyDamage(damage);
 		}
 	}
 	
 	die(){
 		// não esquecer de dar um jeito de destruir isso
+		SOUND.CRY.play();
 		let txt = new Text("Game Over", 250, 250, 100);
 		txt.fillStyle = "white";	
 
@@ -146,7 +151,7 @@ class Player extends CharacterBase{
 		// então no lugar de destruir o player e instancia-lo denovo, 
 		// resetar os valores
 		
-		new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1), 3, 1000);
+		this.showBlood();
 		super.destroy();
 		
 	}

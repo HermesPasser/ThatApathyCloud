@@ -138,8 +138,9 @@ class Enemy extends CharacterBase{
 		this.currentTimeToShot += Ramu.time.delta;
 	}
 	
-	die(){		
-		new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(this.x, this.y, 1, 1, 1000), 3);
+	die(){
+		SOUND.CRY.play();		
+		this.showBlood();
 		this.setCanDraw(false);
 		this.mainCol.destroy()
 		this.destroy();

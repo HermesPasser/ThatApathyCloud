@@ -54,13 +54,23 @@ class CharacterBase extends Entity{
 		this.timeToShot = 0.5;
 		this.currentTimeToShot = this.timeToShot;
 		
+		// Particles
+		this.bloodParticle = new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(1, 1, 1, 1), 3, particleBloodNumber);
+
+		this.createRaycast();
+		
 		// To collide with enemies
 		let ref = this;
 		this.mainCol.applyDamage = function(damage){
 			ref.applyDamage(damage);
 		}
 	}
-		
+	
+	showBlood(){
+		this.bloodParticle.setPosition(this.x + this.width/2, this.y + this.height/2);
+		this.bloodParticle.init();
+	}
+	
 	machineState(walking){
 		let animation = "upStay";
 		
@@ -86,7 +96,7 @@ class CharacterBase extends Entity{
 			this.setCurrentAnimation(animation);
 	}
 	
-	isPassable(){		
+	isPassable(){
 		let ox = this.x, oy = this.y,
 			dx = 0, dy = 0, 
 			vel = this.vel * 2;
@@ -112,26 +122,26 @@ class CharacterBase extends Entity{
 				oy += this.height;
 				dy += vel;
 		}
-		
+		this.raycast.init(ox, oy, dx, dy, 0.2);	
+	}
+	
+	createRaycast(){
 		let ref = this;
+		
 		this.raycast = new Raycast();
 		this.raycast.onCollision = function(){
-			let tag = ref.getEnemyTag();
+			var tag = ref.getEnemyTag();
 			
 			for (let i = 0; i < this.collision.length; i++)
-				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag){
+				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag)
 					ref.canPass = false;
-					this.destroy();
-				}
-				else
-					ref.canPass = true;
+				else ref.canPass = true;
+			this.abord();
 		}
 		
 		this.raycast.onRaycastEnd = function(){
-			this.destroy();
+			ref.canPass = true;
 		}
-		
-		this.raycast.init(ox, oy, dx, dy, 0.2);
 	}
 	
 	shot(){
