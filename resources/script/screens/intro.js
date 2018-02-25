@@ -13,7 +13,7 @@ class IntroScreen extends Screen{
 	start(){
 		let posX = this.isIntro ? 1 : Ramu.canvas.width / 2 - 40;
 		this.txt = new Text(this.text, posX, Ramu.canvas.height, 500);
-		this.txt.fillStyle = "white";	
+		this.txt.fillStyle = "white";
 		if (this.isIntro)
 			SOUND.GAME.play();
 	}

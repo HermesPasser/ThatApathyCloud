@@ -32,6 +32,3 @@ var disappearParticleNumber = 500;
 
 new Machine();
 
-
-//remove
-var LOG_TEXT = "";

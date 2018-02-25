@@ -1,10 +1,11 @@
-// nao esquecer trilha sonora
-
 //-----------------------------------------------------|
 // Name		Property								   |
 //-----------------------------------------------------|
 // Teleport	Move (int: map id, int: x pos, int: y pos) |
 //-----------------------------------------------------|
+
+const PASSABLE = 0;
+const NON_PASSABLE = 2;
 
 class Map{
 	constructor(xmlPath){
@@ -21,23 +22,37 @@ class TeleportObject extends SimpleRectCollisor{
 		super(x, y, width, height);
 		this.mapID = mapID;
 		this.position = rectPosition;
+		this.oldMessage = GameScreen.infodump.text;
 	}
 	
 	onCollision(){
-		for (let i = 0; this.collision[i].tag != "player" || i < this.collision.length; i++){
-			LOG_TEXT = "'space' to open.";
+		this.messageShowed = false;
+		
+		for (let i = 0; i < this.collision.length; i++){
+			if (this.collision[i].tag != 'player')
+				continue;
+			
+			this.messageShowed = true;
+			
+			GameScreen.infodump.text = "'space' to open.";
 			
 			if (keyCode.space in Ramu.pressedKeys){
+				GameScreen.infodump.text = this.oldMessage;
 				GameScreen.world.refreshMap(World.maps[this.mapID]);
-				
 				GameScreen.player.setX(this.position.x);
 				GameScreen.player.setY(this.position.y)	
-				
 				Ramu.pressedKeys = [];
+				
 				this.destroy();
 			}
 			break;
 		}
+	}
+	
+	update(){
+		super.update();
+		if (!this.messageShowed)
+			GameScreen.infodump.text = this.oldMessage;
 	}
 }
 
@@ -54,44 +69,57 @@ class World extends GameObj{
 		this.refreshMap(World.maps["01"]);
 	}
 	
+	// not tested yet
 	destroy(){
 		for (let l = 0; l < this.grid.length; l++){
 			for (let i = 0; i < this.grid[l].length; i++){
 				this.grid[l][i].destroy();
-				this.grid[l][i] = null;
+				delete this.grid[l][i];
 			}
 		}
+		
+		for (let i = 0; i < this.mapObjs.length; i++){
+			this.mapObjs[i].destroy();
+			delete this.mapObjs[i];
+		}
+		
+		for (let i = 0; i < this.restrictions.length; i++){
+			this.restrictions[i].destroy();
+			delete this.restrictions[i];
+		}
+		
 		super.destroy();
 	}
 	
-	refreshMap(map){
-		this.currentMap = map;
-		this.spawnMap();
-		
+	refreshMap(map){		
 		for (let i = 0; i < this.mapObjs.length; i++)
 			this.mapObjs[i].destroy();
-		
+				
+		this.currentMap = map;
+		this.spawnMap();
 		this.mapObjs = [];
 		this.spawnObjects();
 	}
 	
-	/// setGrid will be called once in the init of this class
-	setGrid(){
-		// Create the grid
-		
+	/// Create the grid - will be called once in the init of this class
+	setGrid(){		
 		this.grid = [ [], [], [] ]; // lenght 3 bacause the 4rd layer data will not be draw
+		this.restrictions = [];
 		for (let l = 0; l < this.grid.length; l++){
 			for (let i = 0, x = 0, y = 0; i < BASIS.TILE_COUNT; x += BASIS.TILE_SIZE, i++){
 				if (x == Ramu.canvas.width)
 					x = 0, y += BASIS.TILE_SIZE;
 
 				this.grid[l][i] = new Spritesheet(BASIS.IMAGE, new Rect(0,0,0,0), x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE)
-				this.grid[l][i].drawPriority = l; 
+				this.grid[l][i].drawPriority = l;
 				
-				// Add a collisor to the GameSpritesheet's object
-				this.grid[l][i].collisor = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
-				this.grid[l][i].collisor.canCollide = false;
-				this.grid[l][i].collisor.drawPriority = l;
+				// Add all the collisors at the first loop
+				if (l === 0){					
+					this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					this.restrictions[i].canCollide = false;
+					this.restrictions[i].drawPriority = 6;
+					this.restrictions[i].tag = "wall";
+				}
 			}
 		}
 		Drawable.sortPriority();
@@ -106,18 +134,18 @@ class World extends GameObj{
 			// For each tile in layer
 			for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
 				let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
-				
-				if (id == -1) continue;
-								
+												
 				// Get position of the tile using the ID
 				var sheetX = (id % (BASIS.IMAGE_WIDTH / BASIS.TILE_SIZE)) * BASIS.TILE_SIZE;
 				var sheetY = ~~(id / (BASIS.IMAGE_WIDTH / BASIS.TILE_SIZE)) * BASIS.TILE_SIZE;
-						
-				// Update grid image and position (0 = null)
-				if (id != 0)
+								
+				// Update grid image and position (0 = null).
+				if (id !== PASSABLE){
 					this.grid[dataLayer][i].setSheet(new Rect(sheetX, sheetY, BASIS.TILE_SIZE, BASIS.TILE_SIZE));
-				else // Not draw
-					 this.grid[dataLayer][i].canDraw = false;
+					this.grid[dataLayer][i].canDraw = true;
+				}
+				// Not draw
+				else this.grid[dataLayer][i].canDraw = false;
 			}
 		}
 
@@ -125,21 +153,18 @@ class World extends GameObj{
 	}
 	
 	setRestrictions(){
-		// tentar fazer isso no loop do metodo acima para economicar processamento
 		let data = this.currentMap.grids[3].innerHTML.split(",");
 
 		// For each tile in layer
 		for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
 			let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
-			
-			if (id == -1) continue;
-			
+						
 			// Not passable ID
-			if (id == 2){
-				this.grid[2][i].collisor.canCollide = true;
-				this.grid[2][i].collisor.tag = "wall";
-			}
-		}	
+			if (id === NON_PASSABLE)
+				this.restrictions[i].canCollide = true;
+			else 
+				this.restrictions[i].canCollide = false;
+		}
 	}
 	
 	spawnObjects(){
