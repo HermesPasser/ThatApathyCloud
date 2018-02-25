@@ -8,6 +8,10 @@ class GameScreen extends Screen{
 		// precisa ser adicionado pelo spawn objs
 		// GameScreen.emtest = new Enemy(200, 250);
 		
+		// Create the text gui
+		GameScreen.infodump = new Text('', Ramu.canvas.width / 2 - 30, Ramu.canvas.height - 50, 100);
+		GameScreen.infodump.fillStyle = "white";
+		
 		GameObj.sortPriority();	
 	}
 
