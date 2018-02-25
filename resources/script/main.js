@@ -30,8 +30,5 @@ var disappearParticleNumber = 500;
 
 // END - Options
 
-//a mensagem que só aparece quando está dentro da area de teleport fica aparecendo full time quando o mapa é trocado 
-
-
 new Machine();
 

@@ -4,6 +4,9 @@
 // Teleport	Move (int: map id, int: x pos, int: y pos) |
 //-----------------------------------------------------|
 
+const PASSABLE = 0;
+const NON_PASSABLE = 2;
+
 class Map{
 	constructor(xmlPath){
 		this.xml = loadXML(xmlPath);
@@ -34,12 +37,12 @@ class TeleportObject extends SimpleRectCollisor{
 			GameScreen.infodump.text = "'space' to open.";
 			
 			if (keyCode.space in Ramu.pressedKeys){
+				GameScreen.infodump.text = this.oldMessage;
 				GameScreen.world.refreshMap(World.maps[this.mapID]);
 				GameScreen.player.setX(this.position.x);
 				GameScreen.player.setY(this.position.y)	
-				
 				Ramu.pressedKeys = [];
-						
+				
 				this.destroy();
 			}
 			break;
@@ -88,22 +91,18 @@ class World extends GameObj{
 		super.destroy();
 	}
 	
-	refreshMap(map){
-		this.currentMap = map;
-		this.spawnMap();
-		
-		// isso realmente altera algo?
+	refreshMap(map){		
 		for (let i = 0; i < this.mapObjs.length; i++)
 			this.mapObjs[i].destroy();
 				
+		this.currentMap = map;
+		this.spawnMap();
 		this.mapObjs = [];
 		this.spawnObjects();
 	}
 	
-	/// setGrid will be called once in the init of this class
-	setGrid(){
-		// Create the grid
-		
+	/// Create the grid - will be called once in the init of this class
+	setGrid(){		
 		this.grid = [ [], [], [] ]; // lenght 3 bacause the 4rd layer data will not be draw
 		this.restrictions = [];
 		for (let l = 0; l < this.grid.length; l++){
@@ -141,11 +140,12 @@ class World extends GameObj{
 				var sheetY = ~~(id / (BASIS.IMAGE_WIDTH / BASIS.TILE_SIZE)) * BASIS.TILE_SIZE;
 								
 				// Update grid image and position (0 = null).
-				if (id != 0)
+				if (id !== PASSABLE){
 					this.grid[dataLayer][i].setSheet(new Rect(sheetX, sheetY, BASIS.TILE_SIZE, BASIS.TILE_SIZE));
+					this.grid[dataLayer][i].canDraw = true;
+				}
 				// Not draw
-				else 
-					 this.grid[dataLayer][i].canDraw = false;
+				else this.grid[dataLayer][i].canDraw = false;
 			}
 		}
 
@@ -160,7 +160,7 @@ class World extends GameObj{
 			let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
 						
 			// Not passable ID
-			if (id == 2)
+			if (id === NON_PASSABLE)
 				this.restrictions[i].canCollide = true;
 			else 
 				this.restrictions[i].canCollide = false;
