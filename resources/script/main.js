@@ -17,6 +17,8 @@ Ramu.init(500, 500); // (800, 600); // resolução final (já que ele provavelme
 
 Ramu.debugMode = true;
 
+// não esquecer exit option
+
 // Options
 
 var particleBloodNumber = 1000;

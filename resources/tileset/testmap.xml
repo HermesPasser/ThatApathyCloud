@@ -60,7 +60,7 @@
  <objectgroup name="Camada de Objetos 1">
   <object id="5" name="teleport" x="247" y="401.333" width="56" height="20">
    <properties>
-    <property name="move" value="02,250,150"/>
+    <property name="move" value="02,50,250"/>
    </properties>
   </object>
  </objectgroup>

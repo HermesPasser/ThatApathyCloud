@@ -3,58 +3,8 @@
 //-----------------------------------------------------|
 // Teleport	Move (int: map id, int: x pos, int: y pos) |
 //-----------------------------------------------------|
-
 const PASSABLE = 0;
 const NON_PASSABLE = 2;
-
-class Map{
-	constructor(xmlPath){
-		this.xml = loadXML(xmlPath);
-		// 0 - Below / 1 - Same
-		// 2 - Above / 3 - Restrictions (not draw)
-		this.grids = this.xml.getElementsByTagName("data");
-		this.objs = this.xml.getElementsByTagName("objectgroup");
-	}
-}
-
-class TeleportObject extends SimpleRectCollisor{
-	constructor(x, y, width, height, mapID, rectPosition){
-		super(x, y, width, height);
-		this.mapID = mapID;
-		this.position = rectPosition;
-		this.oldMessage = GameScreen.infodump.text;
-	}
-	
-	onCollision(){
-		this.messageShowed = false;
-		
-		for (let i = 0; i < this.collision.length; i++){
-			if (this.collision[i].tag != 'player')
-				continue;
-			
-			this.messageShowed = true;
-			
-			GameScreen.infodump.text = "'space' to open.";
-			
-			if (keyCode.space in Ramu.pressedKeys){
-				GameScreen.infodump.text = this.oldMessage;
-				GameScreen.world.refreshMap(World.maps[this.mapID]);
-				GameScreen.player.setX(this.position.x);
-				GameScreen.player.setY(this.position.y)	
-				Ramu.pressedKeys = [];
-				
-				this.destroy();
-			}
-			break;
-		}
-	}
-	
-	update(){
-		super.update();
-		if (!this.messageShowed)
-			GameScreen.infodump.text = this.oldMessage;
-	}
-}
 
 class World extends GameObj{	
 	start(){
@@ -115,7 +65,7 @@ class World extends GameObj{
 				
 				// Add all the collisors at the first loop
 				if (l === 0){					
-					this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
 					this.restrictions[i].canCollide = false;
 					this.restrictions[i].drawPriority = 6;
 					this.restrictions[i].tag = "wall";
@@ -171,26 +121,15 @@ class World extends GameObj{
 		for (let objLayer = 0; objLayer < this.currentMap.objs.length; objLayer++){
 			let objs = this.currentMap.objs[objLayer].getElementsByTagName("object");
 			
-			for (let i = 0; i < objs.length; i++){
-				let x 	   = parseInt(objs[i].getAttribute("x"));
-				let y 	   = parseInt(objs[i].getAttribute("y"));
-				let width  = parseInt(objs[i].getAttribute("width"));
-				let height = parseInt(objs[i].getAttribute("height"));
-				
-				switch(objs[i].getAttribute("name")){
-					case "teleport":
-						let properties = objs[i].getElementsByTagName("properties")[0];
-						let property = properties.getElementsByTagName("property")[0];
-						let value = property.getAttribute("value").split(","); // 0 -> id, 1 -> positionX, 2 -> positiY
-						let rect = new Rect(parseInt(value[1]), parseInt(value[2]), 0, 0);
-						this.mapObjs.push(new TeleportObject(x, y, width, height, value[0], rect));
-						break;
-					default:
-						continue;
+			for (let i = 0; i < objs.length; i++){				
+				let obj = new TiledXMLObject(objs[i]);
+				console.log(obj)
+				switch(obj.name){
+					case 'enemy': 	 this.mapObjs.push(Enemy.create(obj)); break;
+					case 'teleport': this.mapObjs.push(TeleportObject.create(obj)); break;
+					default: continue;
 				}
 			}
 		}
-	}
-
-	
+	}	
 }

@@ -1,4 +1,14 @@
 class Enemy extends CharacterBase{
+	static create(TiledXMLObject){
+		let enemy = new Enemy(TiledXMLObject.x, TiledXMLObject.y);
+		enemy.animDrawPriority = GameScreen.player.animDrawPriority;
+		
+		console.log(enemy)
+		
+		GameObj.sortPriority();	
+		return enemy;
+	}
+	
 	constructor(x, y){
 		super(x, y, 36, 50);
 		
@@ -10,7 +20,7 @@ class Enemy extends CharacterBase{
 	}
 	
 	getEnemyTag(){
-		return "player";
+		return 'player';
 	}
 	
 	setupAnimation(){

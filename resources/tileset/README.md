@@ -1,1 +1,1 @@
-Tileset image by Hermes Passer and maps (xml files) created using Tiled.
+Tileset image (basis.png) by Hermes Passer and maps (xml files) created using Tiled Map Editor (version 1.0.3).
