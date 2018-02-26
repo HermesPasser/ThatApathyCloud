@@ -104,7 +104,7 @@ class CharacterBase extends Entity{
 		switch (this.currentDirection){
 			case DIRECTION.TOP:
 				ox += this.width/2;
-				oy += this.height/2 - 30;
+				oy += this.height/2;
 				dy -= vel; 
 				break;
 			case DIRECTION.LEFT:
@@ -131,12 +131,22 @@ class CharacterBase extends Entity{
 		this.raycast = new Raycast();
 		this.raycast.onCollision = function(){
 			var tag = ref.getEnemyTag();
+			var canAbort = true;
 			
-			for (let i = 0; i < this.collision.length; i++)
-				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag)
+			
+			for (let i = 0; i < this.collision.length; i++){
+				if (this.collision[i].tag === "player")
+					canAbort = false;	
+				
+				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag){
+					canAbort = true;
 					ref.canPass = false;
+				}
 				else ref.canPass = true;
-			this.abord();
+			}
+			
+			if (canAbort)
+				this.abort();
 		}
 		
 		this.raycast.onRaycastEnd = function(){
