@@ -1,5 +1,5 @@
 class Bullet extends GameObj{
-	constructor(x, y, direction, damage = 100, damageTag){		
+	constructor(x, y, direction, damage, damageTag){		
 		super(x,y);	
 		this.size = 7;
 		this.tag = "shot";
@@ -8,12 +8,14 @@ class Bullet extends GameObj{
 				
 		this.coll = new SimpleRectCollisor(x, y, this.size, this.size);
 		this.coll.damageTag = damageTag;
+		
+		let ref = this;
 		this.coll.onCollision = function(){			
 			
 			// Add damage
 			for (var i = 0; i < this.collision.length; i++){
 				if (this.collision[i].tag === this.damageTag){
-					this.collision[i].applyDamage(this.damage);
+					this.collision[i].applyDamage(ref.damage);
 					this.destroy();	// Destroy the Bullet			
 				}
 			}
