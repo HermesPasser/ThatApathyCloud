@@ -1,7 +1,9 @@
 class GameScreen extends Screen{	
 	start(){
 		// The input in update must be called before the machineState in update of player
+		GameScreen.bloodParticle = new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(1, 1, 1, 1), 3, particleBloodNumber);
 		GameScreen.world = new World(0,0);
+		
 		GameScreen.player = new Player(200,200);
 		GameScreen.player.updatePriority = this.updatePriority - 1;
 				
