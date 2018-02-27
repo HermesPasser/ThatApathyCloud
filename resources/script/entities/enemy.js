@@ -1,18 +1,16 @@
+
 class Enemy extends CharacterBase{
 	static create(TiledXMLObject){
 		let enemy = new Enemy(TiledXMLObject.x, TiledXMLObject.y);
 		enemy.animDrawPriority = GameScreen.player.animDrawPriority;
 		
-		console.log(enemy)
-		
-		GameObj.sortPriority();	
 		return enemy;
 	}
 	
 	constructor(x, y){
 		super(x, y, 36, 50);
 		
-		this.mainCol.tag = "enemy";	
+		this.mainCol.tag = 'enemy';	
 		
 		// Shot
 		this.timeToShot = 2;
@@ -121,7 +119,14 @@ class Enemy extends CharacterBase{
 			return;
 		
 		let distance = RamuMath.distance(GameScreen.player, this);
+		
+		// console.log("antes " + this.canPass)
+		
 		this.isPassable();
+		
+		// console.log("depois " + this.canPass)
+		// console.log("------------")
+		
 		this.machineState(true);
 		
 		// Move
@@ -132,6 +137,28 @@ class Enemy extends CharacterBase{
 			
 			// Shot
 			this.shot();
+		}
+	}
+	
+	createRaycast(){
+		let ref = this;
+		
+		this.raycast = new Raycast();
+		this.raycast.onCollision = function(){
+			var tag = ref.getEnemyTag();
+			
+			for (let i = 0; i < this.collision.length; i++){
+				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag){
+					ref.canPass = false;
+					break;
+				} else ref.canPass = true;
+			}
+			
+			this.abort();
+		}
+		
+		this.raycast.onRaycastEnd = function(){
+			ref.canPass = true;
 		}
 	}
 	

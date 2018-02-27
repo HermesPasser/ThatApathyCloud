@@ -22,7 +22,7 @@ class Player extends CharacterBase{
 		return "enemy";
 	}
 	
-	disappear(){		
+	disappear(){	
 		if (this.currentTimeToDisappear >= this.timeToDisappear){
 			SOUND.DISAPPEAR.play();
 			
@@ -76,6 +76,11 @@ class Player extends CharacterBase{
 	}
 	
 	update(){
+		if (this.life <= 0){
+			this.setCanDraw(false);
+			return;
+		}
+		
 		this.machineState(false); // To set idle pose. If some arrow is pressed so will be override by the walking animation
 		this.currentTimeToShot += Ramu.time.delta;
 		this.currentTimeToDisappear += Ramu.time.delta;
@@ -90,10 +95,7 @@ class Player extends CharacterBase{
 				this.isInvisible = false
 				this.currentTimeToBecomeVisible = 0;
 			}
-		}
-		
-		if (this.life <= 0)
-			this.setCanDraw(false);
+		}		
 	}
 	
 	walkUp(){
@@ -128,12 +130,44 @@ class Player extends CharacterBase{
 			this.addY(this.vel * Ramu.time.delta);
 	}
 	
+	createRaycast(){
+		let ref = this;
+		
+		this.raycast = new Raycast();
+		this.raycast.onCollision = function(){
+			var tag = ref.getEnemyTag();
+			var canAbort = true;
+			
+			for (let i = 0; i < this.collision.length; i++){
+				if (ref.tag === 'player' && this.collision[i].tag === 'player')
+					canAbort = false;	
+				
+				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag){
+					canAbort = true;
+					ref.canPass = false;
+				}
+				else ref.canPass = true;
+			}
+			
+			if (canAbort)
+				this.abort();
+		}
+		
+		this.raycast.onRaycastEnd = function(){
+			ref.canPass = true;
+		}
+	}
+	
 	getDamage(){
 		return 100;
 	}
 	
 	applyDamage(damage){
 		// If is not invisible then apply the damage
+		if (this.life <= 0)
+			return;
+		
+		// console.log(this.life + " " + this.life <= 0)
 		if (!this.isInvisible){
 			this.showBlood();
 			super.applyDamage(damage);
@@ -141,7 +175,9 @@ class Player extends CharacterBase{
 	}
 	
 	die(){
-		// não esquecer de dar um jeito de destruir isso
+		if (this.life <= 0)
+			return;
+				
 		SOUND.CRY.play();
 		let txt = new Text("Game Over", 250, 250, 100);
 		txt.fillStyle = "white";	
@@ -151,8 +187,10 @@ class Player extends CharacterBase{
 		// então no lugar de destruir o player e instancia-lo denovo, 
 		// resetar os valores
 		
-		this.showBlood();
-		super.destroy();
+		
+		// this.showBlood();
+		// this.setCanDraw(false);
+		//super.destroy();
 		
 	}
 	

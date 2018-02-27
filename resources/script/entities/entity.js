@@ -7,7 +7,10 @@ class Entity extends SpritesheetAnimator{
 	}
 
 	applyDamage(damage){
-		this.life -= 100;
+		if (this.life <= 0)
+			return;
+
+		this.life -= parseInt(damage);
 		
 		if (this.life <= 0)
 			this.die();
@@ -37,7 +40,7 @@ class Entity extends SpritesheetAnimator{
 	
 	destroy(){
 		this.mainCol.destroy();
-		this.mainCol = null;
+		delete this.mainCol;
 		super.destroy();
 	}
 }
@@ -54,9 +57,6 @@ class CharacterBase extends Entity{
 		this.timeToShot = 0.5;
 		this.currentTimeToShot = this.timeToShot;
 		
-		// Particles
-		this.bloodParticle = new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(1, 1, 1, 1), 3, particleBloodNumber);
-
 		this.createRaycast();
 		
 		// To collide with enemies
@@ -67,8 +67,8 @@ class CharacterBase extends Entity{
 	}
 	
 	showBlood(){
-		this.bloodParticle.setPosition(this.x + this.width/2, this.y + this.height/2);
-		this.bloodParticle.init();
+		GameScreen.bloodParticle.setPosition(this.x + this.width/2, this.y + this.height/2);
+		GameScreen.bloodParticle.init();
 	}
 	
 	machineState(walking){
@@ -123,35 +123,6 @@ class CharacterBase extends Entity{
 				dy += vel;
 		}
 		this.raycast.init(ox, oy, dx, dy, 0.2);	
-	}
-	
-	createRaycast(){
-		let ref = this;
-		
-		this.raycast = new Raycast();
-		this.raycast.onCollision = function(){
-			var tag = ref.getEnemyTag();
-			var canAbort = true;
-			
-			
-			for (let i = 0; i < this.collision.length; i++){
-				if (this.collision[i].tag === "player")
-					canAbort = false;	
-				
-				if (this.collision[i].tag === "wall" || this.collision[i].tag === tag){
-					canAbort = true;
-					ref.canPass = false;
-				}
-				else ref.canPass = true;
-			}
-			
-			if (canAbort)
-				this.abort();
-		}
-		
-		this.raycast.onRaycastEnd = function(){
-			ref.canPass = true;
-		}
 	}
 	
 	shot(){
