@@ -64,8 +64,11 @@ class World extends GameObj{
 				this.grid[l][i].drawPriority = l;
 				
 				// Add all the collisors at the first loop
-				if (l === 0){					
-					this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+				if (l === 0){
+					if (Ramu.debugMode)
+						this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					else
+						this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
 					this.restrictions[i].canCollide = false;
 					this.restrictions[i].drawPriority = 6;
 					this.restrictions[i].tag = "wall";
@@ -123,7 +126,7 @@ class World extends GameObj{
 			
 			for (let i = 0; i < objs.length; i++){				
 				let obj = new TiledXMLObject(objs[i]);
-				console.log(obj)
+
 				switch(obj.name){
 					case 'enemy': 	 this.mapObjs.push(Enemy.create(obj)); break;
 					case 'teleport': this.mapObjs.push(TeleportObject.create(obj)); break;
