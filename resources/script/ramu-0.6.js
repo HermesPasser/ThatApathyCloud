@@ -204,6 +204,16 @@ class Ramu{
 		}
 	}
 	
+	static get width(){
+		if (Ramu.canvas)
+			return Ramu.canvas.width;
+	}
+	
+	static get height(){
+		if (Ramu.canvas)
+			return Ramu.canvas.height;
+	}
+	
 	/// Check all collisions in the game.
 	static checkCollision(){
 		for (var i = 0; i < objsToCollide.length; i++){
@@ -985,7 +995,7 @@ class SimpleParticle extends GameObj{
 			this.particles[i].x = this.x;
 			this.particles[i].y = this.y;			
 			this.particles[i].canDraw = false;
-		}	
+		}
 	}
 	
 	destroy(){
