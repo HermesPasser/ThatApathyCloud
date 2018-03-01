@@ -80,6 +80,19 @@ class RamuUtils{
 		return img;
 	}
 	
+	static playSound(sound, volume = null){
+		if (volume != null)
+			sound.volume = volume;
+		
+		const playPromise = sound.play();
+		if (playPromise !== null){
+			
+			playPromise.catch( () => { 
+				sound.play();
+			});
+		}
+	}
+	
 	/// Check if image is loaded
 	static imageIsLoaded(img){
 		if (!(img instanceof Image)) return false;
@@ -116,6 +129,10 @@ class Ramu{
 		Ramu.canvas.height = height
 		Ramu.ctx = Ramu.canvas.getContext("2d");
 		document.body.appendChild(Ramu.canvas);
+		
+		Ramu.callSortUpdate    = false;
+		Ramu.callSortDraw 	   = false;
+		Ramu.callSortCollision = false;
 		
 		Ramu.debugMode = false;
 		Ramu.inLoop = true;
@@ -159,7 +176,19 @@ class Ramu{
 		
 			while(Ramu.time.frameTime > Ramu.time.delta) {
 				Ramu.start();
+
+				if (Ramu.callSortCollision){
+					Collisor.sortPriority();
+					Ramu.callSortCollision = false;
+				}
+				
 				Ramu.checkCollision();
+				
+				if (Ramu.callSortUpdate){
+					GameObj.sortPriority();
+					Ramu.callSortUpdate = false;
+				}
+				
 				Ramu.update();
 				Ramu.time.frameTime = Ramu.time.frameTime - Ramu.time.delta;
 				
@@ -171,6 +200,11 @@ class Ramu{
 					break;
 				}
 			}
+		}
+		
+		if (Ramu.callSortDraw){
+			Drawable.sortPriority();
+			Ramu.callSortDraw = false;
 		}
 		
 		Ramu.draw();
@@ -259,7 +293,7 @@ class GameObj{
 	}
 	static addObjt(obj){
 		gameObjs.push(obj);
-		GameObj.sortPriority();
+		Ramu.callSortUpdate = true; //GameObj.sortPriority();
 	}
 	
 	static sortPriority(){
@@ -310,7 +344,7 @@ class Drawable extends GameObj{
 	
 	static addObjt(drawableObj){
 		objsToDraw.push(drawableObj);
-		Drawable.sortPriority();
+		Ramu.callSortDraw = true; //Drawable.sortPriority();
 	}
 	
 	static sortPriority(){
@@ -374,7 +408,7 @@ class Collisor extends Drawable{
 	
 	static addObjt(colObj){
 		objsToCollide.push(colObj);
-		Collisor.sortPriority();
+		Ramu.callSortCollision = true; //Collisor.sortPriority();
 	}
 	
 	static sortPriority(){
