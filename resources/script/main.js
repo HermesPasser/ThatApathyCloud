@@ -13,16 +13,22 @@
 // new SimpleRectCollisor(1, 490, 500, 10).tag = "wall";
 // new SimpleRectCollisor(300, 220, 50, 200).tag = "wall";
 
-Ramu.init(500, 500); // (800, 600); // resolução final (já que ele provavelmente aguenta mapas maiores)
+Ramu.init(BASIS.SCREEN_WIDTH, BASIS.SCREEN_HEIGHT);
 
-Ramu.debugMode = true;
+// Ramu.debugMode = true;
+
 
 // não esquecer exit option
+
+// jogando exception quando chama o destroy do player
+// texto de game over não aparecendo, deve estar atras de algo, mas criar tela de
+// game over
 
 // Options
 
 var particleBloodNumber = 1000;
 var disappearParticleNumber = 500;
+var shotParticleNumber = 300;
 
 // sound
 // SOUND.SHOT.volume = 0.1;
@@ -33,4 +39,6 @@ var disappearParticleNumber = 500;
 // END - Options
 
 new Machine();
+
+// var t = new LeftTurret(300, 250)
 

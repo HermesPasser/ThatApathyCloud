@@ -85,7 +85,7 @@ class World extends GameObj{
 			let data = this.currentMap.grids[dataLayer].innerHTML.split(",");
 
 			// For each tile in layer
-			for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
+			for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (width / 50) * (height / 50)
 				let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
 												
 				// Get position of the tile using the ID
@@ -103,6 +103,7 @@ class World extends GameObj{
 		}
 
 		this.setRestrictions();
+		Drawable.sortPriority();
 	}
 	
 	setRestrictions(){
