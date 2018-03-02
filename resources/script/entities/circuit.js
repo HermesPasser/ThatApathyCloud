@@ -2,12 +2,12 @@
 class TurretCircuit extends Enemy{
 	static create(TiledXMLObject){
 		let circuit = new TurretCircuit(TiledXMLObject.x, TiledXMLObject.y, TiledXMLObject.properties["turretID"]);
-		circuit.animDrawPriority = GameScreen.player.animDrawPriority;
+		circuit.animDrawPriority = LAYER.BELOW;
 		return circuit;
 	}
 	
 	constructor(x,y,id){
-		super(x + 9, y); // because in tiled im working with 50x50 not 41x39
+		super(x, y);
 		this.turretID = parseInt(id);
 	}
 	
@@ -15,12 +15,17 @@ class TurretCircuit extends Enemy{
 		super.start();
 		this.shootParticle = new SimpleParticle(PARTICLE_IMAGE.YELLOW, new Rect(1, 1, 1, 1), 3, shotParticleNumber);
 		
-		this.width = 41;
-		this.height = 39;
+		
+		this.width = 50;
+		this.height = 50;
+		this.mainCol.width = 50;
 		this.life = 200;
 	}
 	
 	applyDamage(damage){
+		if (this.currentID === "destroyed")
+			return;
+		
 		this.setCurrentAnimation("broken");
 		super.applyDamage(damage);
 	}
@@ -37,14 +42,14 @@ class TurretCircuit extends Enemy{
 	}
 	
 	setupAnimation(){
-		let normal = new SpritesheetAnimation(BASIS.IMAGE, 0, 200, this.width, this.height);
-		normal.addFrame(new Rect(100, 200, this.width, this.height));
+		let normal = new SpritesheetAnimation(BASIS.IMAGE, 0, 0, 50, 50);
+		normal.addFrame(new Rect(100, 200, 50, 50));
 		
-		let broken = new SpritesheetAnimation(BASIS.IMAGE, 0, 200, this.width, this.height);
-		broken.addFrame(new Rect(100, 250, this.width, this.height));
+		let broken = new SpritesheetAnimation(BASIS.IMAGE, 0, 0, 50, 50);
+		broken.addFrame(new Rect(100, 250, 50, 50));
 
-		let destroyed = new SpritesheetAnimation(BASIS.IMAGE, 0, 200, this.width, this.height);
-		destroyed.addFrame(new Rect(100, 150, this.width, this.height));
+		let destroyed = new SpritesheetAnimation(BASIS.IMAGE, 0, 0, 50, 50);
+		destroyed.addFrame(new Rect(100, 150, 50, 50));
 
 		this.addAnimation("normal", normal);
 		this.addAnimation("broken", broken);

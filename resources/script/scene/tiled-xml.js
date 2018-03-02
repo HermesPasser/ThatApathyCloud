@@ -14,7 +14,7 @@ class Map{
 class TiledXMLObject{
 	constructor(objectNode){
 		// because tiled align add x and y 50 px below
-		this.x 		= parseInt(objectNode.getAttribute('x')) - BASIS.TILE_SIZE;
+		this.x 		= parseInt(objectNode.getAttribute('x'));
 		this.y 		= parseInt(objectNode.getAttribute('y')) - BASIS.TILE_SIZE;
 		this.width  = parseInt(objectNode.getAttribute('width'));
 		this.height = parseInt(objectNode.getAttribute('height'));

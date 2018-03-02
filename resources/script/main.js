@@ -2,8 +2,7 @@
 
 
 Ramu.init(BASIS.SCREEN_WIDTH, BASIS.SCREEN_HEIGHT);
-
-// Ramu.debugMode = true;
+Ramu.debugMode = true;
 
 
 // não esquecer exit option
@@ -27,3 +26,4 @@ var shotParticleNumber = 300;
 // END - Options
 
 new Machine();
+

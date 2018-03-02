@@ -15,6 +15,8 @@ class LeftTurret extends Enemy{
 		super.start();
 		this.shootParticle = new SimpleParticle(PARTICLE_IMAGE.YELLOW, new Rect(1, 1, 1, 1), 3, shotParticleNumber);
 		
+		// To set the body of turret in the position instead of barrel
+		this.setX(this.x - 33);
 		this.width = 50;
 		this.height = 50;
 		this.mainCol.width = 50;

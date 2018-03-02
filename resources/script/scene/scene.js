@@ -65,10 +65,10 @@ class World extends GameObj{
 				
 				// Add all the collisors at the first loop
 				if (l === 0){
-					if (Ramu.debugMode)
-						this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
-					else
-						this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					// if (Ramu.debugMode)
+						// this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					// else
+					this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
 					this.restrictions[i].canCollide = false;
 					this.restrictions[i].drawPriority = 6;
 					this.restrictions[i].tag = "wall";
