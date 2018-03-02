@@ -170,7 +170,7 @@ class Enemy extends CharacterBase{
 	}
 	
 	die(){
-		SOUND.CRY.play();		
+		RamuUtils.playSound(SOUND.CRY);		
 		this.showBlood();
 		this.setCanDraw(false);
 		this.mainCol.destroy()
@@ -181,10 +181,14 @@ class Enemy extends CharacterBase{
 
 class LeftTurret extends Enemy{
 	static create(TiledXMLObject){
-		let enemy = new LeftTurret(TiledXMLObject.x, TiledXMLObject.y);
-		enemy.animDrawPriority = GameScreen.player.animDrawPriority;
-		
-		return enemy;
+		let turret = new LeftTurret(TiledXMLObject.x, TiledXMLObject.y, TiledXMLObject.properties["turretID"]);
+		turret.animDrawPriority = GameScreen.player.animDrawPriority;
+		return turret;
+	}
+	
+	constructor(x,y,id){
+		super(x,y);
+		this.turretID = parseInt(id);
 	}
 	
 	start(){
@@ -196,6 +200,9 @@ class LeftTurret extends Enemy{
 		this.mainCol.width = 50;
 		this.mainCol.x += 34;
 		this.isTurret = true;
+		this.setX(this.x);
+		this.setY(this.y);
+		this.setCanDraw(true);
 	}
 	
 	applyDamage(damage){ }
@@ -233,7 +240,7 @@ class LeftTurret extends Enemy{
 		let distance = RamuMath.distance(GameScreen.player, this);
 				
 		// Shot if the player is in a range of 4 floor tiles
-		if (!(distance > 200 && distance < 800) || GameScreen.player.isInvisible)
+		if (!(distance > 200 && distance < 800) && !GameScreen.player.isInvisible)
 			this.shot();
 	}
 	
