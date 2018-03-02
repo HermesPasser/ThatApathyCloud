@@ -15,7 +15,7 @@ class IntroScreen extends Screen{
 		this.txt = new Text(this.text, posX, Ramu.canvas.height, 500);
 		this.txt.fillStyle = "white";
 		if (this.isIntro)
-			SOUND.GAME.play();
+			RamuUtils.playSound(SOUND.GAME);
 	}
 	
 	update(){

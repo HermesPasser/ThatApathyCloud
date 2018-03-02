@@ -35,6 +35,7 @@ var shotParticleNumber = 300;
 // SOUND.GAME.volume = 0.4;
 // SOUND.CHANGE_OP.volume = 0.1;
 // SOUND.DISAPPEAR.volume = 0.1;
+//playSound(audio, constant_volume)
 
 // END - Options
 
