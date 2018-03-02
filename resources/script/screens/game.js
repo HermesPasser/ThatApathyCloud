@@ -14,7 +14,7 @@ class GameScreen extends Screen{
 		GameScreen.infodump = new Text('', Ramu.canvas.width / 2 - 30, Ramu.canvas.height - 50, 100);
 		GameScreen.infodump.fillStyle = "white";
 		
-		GameObj.sortPriority();	
+		Ramu.callSortUpdate = true;
 	}
 
 	update(){
