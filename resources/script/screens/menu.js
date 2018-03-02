@@ -18,7 +18,7 @@ class TitleScreen extends Screen{
 	}
 		
 	setupCursor(position = 0){
-		SOUND.CHANGE_OP.play();
+		RamuUtils.playSound(SOUND.CHANGE_OP);
 		
 		for (let i = 0; i < this.menu.length; i++){
 			if (position == i)

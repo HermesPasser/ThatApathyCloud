@@ -31,19 +31,23 @@ const SOUND = {
 };
 
 const PARTICLE_IMAGE = {
+	YELLOW: RamuUtils.getImage("resources/sprite/particleyellow.png"),
 	BLOOD: RamuUtils.getImage("resources/sprite/particlered.png"),
 	BLUE: RamuUtils.getImage("resources/sprite/particleblue.png")
 } 
 
 const BASIS = (function(){
 	let data = loadXML("resources/tileset/basis.xml");
-
+	let lines = 15, colunms = 12, tilesize = 50;
+	
 	return {
-		IMAGE: 		  RamuUtils.getImage("resources/tileset/basis.png"),
-		IMAGE_WIDTH:  getAttributeInt(data, "image", "width"),
-		IMAGE_HEIGHT: getAttributeInt(data, "image", "height"),
-		TILE_COUNT:   100,
-		TILE_SIZE:    50,
-		DATA:  		  data
+		IMAGE: 		  	RamuUtils.getImage("resources/tileset/basis.png"),
+		IMAGE_WIDTH:  	getAttributeInt(data, "image", "width"),
+		IMAGE_HEIGHT: 	getAttributeInt(data, "image", "height"),
+		TILE_COUNT:   	lines * colunms,
+		TILE_SIZE:    	tilesize,
+		SCREEN_WIDTH: 	lines * tilesize,
+		SCREEN_HEIGHT:	colunms * tilesize,
+		DATA:  		  	data
 	};
 })()

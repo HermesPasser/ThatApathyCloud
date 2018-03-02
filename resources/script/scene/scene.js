@@ -65,17 +65,17 @@ class World extends GameObj{
 				
 				// Add all the collisors at the first loop
 				if (l === 0){
-					if (Ramu.debugMode)
-						this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
-					else
-						this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					// if (Ramu.debugMode)
+						// this.restrictions[i] = new SimpleRectCollisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
+					// else
+					this.restrictions[i] = new Collisor(x, y, BASIS.TILE_SIZE, BASIS.TILE_SIZE);
 					this.restrictions[i].canCollide = false;
 					this.restrictions[i].drawPriority = 6;
 					this.restrictions[i].tag = "wall";
 				}
 			}
 		}
-		Drawable.sortPriority();
+		Ramu.callSortDraw = true;
 	}
 
 	/// Add the tiles in the grid
@@ -85,7 +85,7 @@ class World extends GameObj{
 			let data = this.currentMap.grids[dataLayer].innerHTML.split(",");
 
 			// For each tile in layer
-			for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
+			for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (width / 50) * (height / 50)
 				let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
 												
 				// Get position of the tile using the ID
@@ -103,6 +103,7 @@ class World extends GameObj{
 		}
 
 		this.setRestrictions();
+		Ramu.callSortDraw = true;
 	}
 	
 	setRestrictions(){
@@ -128,8 +129,10 @@ class World extends GameObj{
 				let obj = new TiledXMLObject(objs[i]);
 
 				switch(obj.name){
-					case 'enemy': 	 this.mapObjs.push(Enemy.create(obj)); break;
-					case 'teleport': this.mapObjs.push(TeleportObject.create(obj)); break;
+					case 'enemy': 	   	  this.mapObjs.push(Enemy.create(obj)); break;
+					case 'teleport':   	  this.mapObjs.push(TeleportObject.create(obj)); break;
+					case 'turretcircuit': this.mapObjs.push(TurretCircuit.create(obj)); break;
+					case 'leftturret':	  this.mapObjs.push(LeftTurret.create(obj)); break;
 					default: continue;
 				}
 			}

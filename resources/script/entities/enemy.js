@@ -119,14 +119,8 @@ class Enemy extends CharacterBase{
 			return;
 		
 		let distance = RamuMath.distance(GameScreen.player, this);
-		
-		// console.log("antes " + this.canPass)
-		
-		this.isPassable();
-		
-		// console.log("depois " + this.canPass)
-		// console.log("------------")
-		
+			
+		this.isPassable();	
 		this.machineState(true);
 		
 		// Move
@@ -176,7 +170,7 @@ class Enemy extends CharacterBase{
 	}
 	
 	die(){
-		SOUND.CRY.play();		
+		RamuUtils.playSound(SOUND.CRY);		
 		this.showBlood();
 		this.setCanDraw(false);
 		this.mainCol.destroy()

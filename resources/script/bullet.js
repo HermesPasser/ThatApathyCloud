@@ -23,14 +23,13 @@ class Bullet extends GameObj{
 				
 		this.sprite = new Spritesheet(BASIS.IMAGE, new Rect (50, 0, this.size, this.size), x, y, this.size, this.size);
 		this.sprite.drawPriority = LAYER.SAME;
-		Drawable.sortPriority();
 		
 		this.coll.tag = "shot";
 	}
 	
 	start(){
 		super.start();
-		SOUND.SHOT.play();
+		RamuUtils.playSound(SOUND.SHOT);
 	}
 	
 	destroy(){
