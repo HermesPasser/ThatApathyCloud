@@ -129,9 +129,10 @@ class World extends GameObj{
 				let obj = new TiledXMLObject(objs[i]);
 
 				switch(obj.name){
-					case 'enemy': 	   this.mapObjs.push(Enemy.create(obj)); break;
-					case 'teleport':   this.mapObjs.push(TeleportObject.create(obj)); break;
-					case 'leftturret': this.mapObjs.push(LeftTurret.create(obj)); break;
+					case 'enemy': 	   	  this.mapObjs.push(Enemy.create(obj)); break;
+					case 'teleport':   	  this.mapObjs.push(TeleportObject.create(obj)); break;
+					case 'turretcircuit': this.mapObjs.push(TurretCircuit.create(obj)); break;
+					case 'leftturret':	  this.mapObjs.push(LeftTurret.create(obj)); break;
 					default: continue;
 				}
 			}

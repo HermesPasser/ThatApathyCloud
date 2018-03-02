@@ -293,7 +293,7 @@ class GameObj{
 	}
 	static addObjt(obj){
 		gameObjs.push(obj);
-		Ramu.callSortUpdate = true; //GameObj.sortPriority();
+		Ramu.callSortUpdate = true;
 	}
 	
 	static sortPriority(){
@@ -344,7 +344,7 @@ class Drawable extends GameObj{
 	
 	static addObjt(drawableObj){
 		objsToDraw.push(drawableObj);
-		Ramu.callSortDraw = true; //Drawable.sortPriority();
+		Ramu.callSortDraw = true;
 	}
 	
 	static sortPriority(){
@@ -408,7 +408,7 @@ class Collisor extends Drawable{
 	
 	static addObjt(colObj){
 		objsToCollide.push(colObj);
-		Ramu.callSortCollision = true; //Collisor.sortPriority();
+		Ramu.callSortCollision = true;
 	}
 	
 	static sortPriority(){
