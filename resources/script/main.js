@@ -1,8 +1,11 @@
 // convem botar um "loading" entre as screens
 
+// slow down ao atirar, ao inves de intanciar cada bala, usar um array com várias pré carregadas
+
+// usar ditionarys no lugar de arrays para quando for destruir o obj
 
 Ramu.init(BASIS.SCREEN_WIDTH, BASIS.SCREEN_HEIGHT);
-Ramu.debugMode = true;
+// Ramu.debugMode = true;
 
 
 // não esquecer exit option

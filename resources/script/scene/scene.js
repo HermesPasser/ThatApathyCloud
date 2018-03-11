@@ -110,7 +110,7 @@ class World extends GameObj{
 		let data = this.currentMap.grids[3].innerHTML.split(",");
 
 		// For each tile in layer
-		for (let i = 0; i < BASIS.TILE_COUNT; i++){ // (500 / 50) * (500 / 50)
+		for (let i = 0; i < BASIS.TILE_COUNT; i++){
 			let id = (parseInt(data[i].replace(/\D/g,''))) - 1;
 						
 			// Not passable ID
@@ -131,8 +131,10 @@ class World extends GameObj{
 				switch(obj.name){
 					case 'enemy': 	   	  this.mapObjs.push(Enemy.create(obj)); break;
 					case 'teleport':   	  this.mapObjs.push(TeleportObject.create(obj)); break;
+					case 'infodump':   	  this.mapObjs.push(InfoDump.create(obj)); break;
 					case 'turretcircuit': this.mapObjs.push(TurretCircuit.create(obj)); break;
 					case 'leftturret':	  this.mapObjs.push(LeftTurret.create(obj)); break;
+					case 'upturret':	  this.mapObjs.push(UpTurret.create(obj)); break;
 					default: continue;
 				}
 			}

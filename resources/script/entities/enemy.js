@@ -28,27 +28,33 @@ class Enemy extends CharacterBase{
 		upStay.addFrame(new Rect(50 + 400, 300, this.width, this.height));
 		
 		let upWalk = new SpritesheetAnimation(BASIS.IMAGE, 50, 50, this.width, this.height);
-		upWalk.addFrame(new Rect(100 + 400, 300, this.width, this.height));
-		upWalk.addFrame(new Rect(50 + 400,  300, this.width, this.height));
-		upWalk.addFrame(new Rect(150 + 400, 300, this.width, this.height));
 		upWalk.animationTime = walkVel;
+		upWalk.addFrame([
+			new Rect(100 + 400, 300, this.width, this.height),
+			new Rect(50 + 400,  300, this.width, this.height),
+			new Rect(150 + 400, 300, this.width, this.height)
+		]);
 
 		let downStay = new SpritesheetAnimation(BASIS.IMAGE, 50, 50, this.width, this.height)
 		downStay.addFrame(new Rect(50 + 400, 350, this.width, this.height));
 		
 		let downWalk = new SpritesheetAnimation(BASIS.IMAGE, 50, 50, this.width, this.height);
-		downWalk.addFrame(new Rect(100 + 400, 350, this.width, this.height));
-		downWalk.addFrame(new Rect(50 + 400,  350, this.width, this.height));
-		downWalk.addFrame(new Rect(150 + 400, 350, this.width, this.height));
 		downWalk.animationTime = walkVel;
+		downWalk.addFrame([
+			new Rect(100 + 400, 350, this.width, this.height),
+			new Rect(50 + 400,  350, this.width, this.height),
+			new Rect(150 + 400, 350, this.width, this.height)
+		]);
 		
 		let leftStay = new SpritesheetAnimation(BASIS.IMAGE, 50, 50, this.width, this.height);
 		leftStay.addFrame(new Rect(400, 300, this.width, this.height));
 		
 		let leftWalk = new SpritesheetAnimation(BASIS.IMAGE, 50, 50, this.width, this.height);
-		leftWalk.addFrame(new Rect(400, 300, this.width, this.height));
-		leftWalk.addFrame(new Rect(400, 350, this.width, this.height));
 		leftWalk.animationTime = walkVel;
+		leftWalk.addFrame([
+			new Rect(400, 300, this.width, this.height),
+			new Rect(400, 350, this.width, this.height)
+		]);
 
 		this.addAnimation("upStay", upStay);
 		this.addAnimation("upWalk", upWalk);
@@ -170,7 +176,7 @@ class Enemy extends CharacterBase{
 	}
 	
 	die(){
-		RamuUtils.playSound(SOUND.CRY);		
+		RamuUtils.playSound(SOUND.CRY);
 		this.showBlood();
 		this.setCanDraw(false);
 		this.mainCol.destroy()

@@ -49,3 +49,50 @@ class TeleportObject extends SimpleRectCollisor{
 			GameScreen.infodump.text = this.oldMessage;
 	}
 }
+
+class InfoDump extends SimpleRectCollisor{
+	static create(tiledXMLObject){
+		return new InfoDump(tiledXMLObject.x, 
+							tiledXMLObject.y, 
+							tiledXMLObject.width, 
+							tiledXMLObject.height, 
+							tiledXMLObject.properties['message'], 
+							tiledXMLObject.properties['showOnce']);
+	}
+	
+	constructor(x, y, width, height, message, showOnce){
+		super(x, y, width, height);
+		this.message = message;
+		this.showOnce = JSON.parse(showOnce);
+		this.messageShowed = false;
+		this.oldMessage = GameScreen.infodump.text;
+	}
+	
+	onCollision(){		
+		for (let i = 0; i < this.collision.length; i++){
+			if (this.collision[i].tag != 'player')
+				continue;
+			
+			this.messageShowed = true;
+			GameScreen.infodump.text = this.message;
+			break;
+		}
+	}
+	
+	update(){
+		super.update();
+		
+		for (let i = 0; i < this.collision.length; i++){
+			if (this.collision[i].tag === 'player')
+				continue;
+			this.messageShowed = false;
+			break;
+		}
+		
+		if (this.messageShowed){
+			GameScreen.infodump.text = this.oldMessage;
+			if (this.showOnce)
+				this.destroy();
+		}
+	}
+}

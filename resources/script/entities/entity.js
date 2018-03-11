@@ -139,8 +139,9 @@ class CharacterBase extends Entity{
 				break;
 			case DIRECTION.BOTTOM: x += 5; y += 35;
 		}
-				
-		new Bullet(x, y, this.currentDirection, this.getDamage(), this.getEnemyTag());
+
+		new Bullet(x, y, true).init(x, y, this.currentDirection, this.getDamage(), this.getEnemyTag());
+		
 		this.currentTimeToShot = 0;	
 	}
 }

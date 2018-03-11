@@ -1,14 +1,46 @@
 class Bullet extends GameObj{
-	constructor(x, y, direction, damage, damageTag){		
+	constructor(x, y, destroyOnCollision = true){		
 		super(x,y);	
 		this.size = 7;
 		this.tag = "shot";
-		this.direction = direction;
-		this.damage = damage;
-				
+		this.destroyOnCollision = destroyOnCollision;
+
 		this.coll = new SimpleRectCollisor(x, y, this.size, this.size);
-		this.coll.damageTag = damageTag;
+				
+		this.sprite = new Spritesheet(BASIS.IMAGE, new Rect (50, 0, this.size, this.size), x, y, this.size, this.size);
+		this.sprite.drawPriority = LAYER.SAME;
 		
+		this.coll.tag = "shot";
+		this.disable();
+	}
+	
+	init(x, y, direction, damage, damageTag){
+		this.x = x;
+		this.coll.x = x;
+		this.sprite.x = x;
+		
+		this.y = y;
+		this.coll.y = y;
+		this.sprite.y = y;
+		
+		this.coll.damageTag = damageTag;
+		this.sprite.canDraw = true;
+
+		this.damage = damage;
+		this.direction = direction;
+		
+		this.setOnCollision();
+		
+		this.isOver = false;
+		RamuUtils.playSound(SOUND.SHOT);		
+	}
+	
+	disable(){
+		this.sprite.canDraw = false;
+		this.isOver = true;
+	}
+	
+	setOnCollision(){
 		let ref = this;
 		this.coll.onCollision = function(){			
 			
@@ -16,20 +48,16 @@ class Bullet extends GameObj{
 			for (var i = 0; i < this.collision.length; i++){
 				if (this.collision[i].tag === this.damageTag){
 					this.collision[i].applyDamage(ref.damage);
-					this.destroy();	// Destroy the Bullet			
-				}
+					
+					if (ref.destroyOnCollision)
+						ref.destroy();
+					else ref.disable();
+				} else if (this.collision[i].tag === "wall")				
+					if (ref.destroyOnCollision)
+						ref.destroy();
+					else ref.disable();
 			}
-		}
-				
-		this.sprite = new Spritesheet(BASIS.IMAGE, new Rect (50, 0, this.size, this.size), x, y, this.size, this.size);
-		this.sprite.drawPriority = LAYER.SAME;
-		
-		this.coll.tag = "shot";
-	}
-	
-	start(){
-		super.start();
-		RamuUtils.playSound(SOUND.SHOT);
+		}	
 	}
 	
 	destroy(){
@@ -38,7 +66,10 @@ class Bullet extends GameObj{
 		super.destroy();
 	}
 	
-	update(){		
+	update(){
+		if (this.isOver)
+			return;
+				
 		var force = 120 * Ramu.time.delta;
 		var fx = 0, fy = 0;
 		
@@ -60,7 +91,11 @@ class Bullet extends GameObj{
 	
 		// Destroy if is out of the canvas
 		if (this.x < -this.size || this.x > Ramu.canvas.width ||
-			this.y < -this.size || this.y > Ramu.canvas.height)
+			this.y < -this.size || this.y > Ramu.canvas.height){
+			
+			if (this.destroyOnCollision)
 				this.destroy();
+			else this.disable();
+		}
 	}
 }
