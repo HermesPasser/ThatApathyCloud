@@ -251,7 +251,7 @@ class Ramu{
 	/// Check all collisions in the game.
 	static checkCollision(){
 		for (var i = 0; i < objsToCollide.length; i++){
-			if (!gameObjs[i]._start_was_called)
+			if (!objsToCollide[i]._start_was_called)
 				continue;
 			objsToCollide[i].checkCollision();
 		}
@@ -263,7 +263,7 @@ class Ramu{
 		Ramu.ctx.clearRect(0, 0, Ramu.canvas.width, Ramu.canvas.height);
 		
 		for (var i = 0; i < objsToDraw.length; i++){
-			if (!gameObjs[i]._start_was_called)
+			if (!objsToDraw[i]._start_was_called)
 				continue;
 			
 			let positionWidth = objsToDraw[i].x + objsToDraw[i].width;		
@@ -630,25 +630,26 @@ class SpriteAnimation extends Drawable{
 	}
 	
 	addFrame(img){ 
-		// Kawthar
-		// if(void 0 === img || arguments.length != 1)
-		// throw new Error();
-
-		// if(Array.isArray(img)){
-		// for (let i = 0; i < img[i]; i++) 
-			// this.frames.push(img);
-		// return;
-		// } else if(img instanceof Image){
-		// this.frames.push(img);
-		// return;
-		// }
-
-		//Argumento ou não é array ou não é uma instância de Image
-		// throw RamuUtils.CustomTypeError(img, Image);
-		if (arguments.length != 1) throw new Error('ArgumentError: Wrong number of arguments');
-		if (!(img instanceof Image)) throw RamuUtils.CustomTypeError(img, Image);
+		if(void 0 === img || arguments.length != 1)
+			throw new Error('ArgumentError: Wrong number of arguments');
 		
-		this.frames.push(img);
+		if(Array.isArray(img)){
+			for (let i = 0; i < img.length; i++) {
+				if(!img[i] instanceof Image)
+					throw RamuUtils.CustomTypeError(img, img);
+				
+				this.frames.push(img[i]);
+			}
+			return;
+		} else if(img instanceof Image){
+			if(!img instanceof Image)
+				throw RamuUtils.CustomTypeError(img, img);
+			
+			this.frames.push(img);
+			return;
+		}
+
+		throw RamuUtils.CustomTypeError(img, Image);
 	}
 	
 	reset(){
@@ -703,11 +704,33 @@ class SpritesheetAnimation extends SpriteAnimation{
 	}
 	
 	addFrame(rect){
-		if (arguments.length != 1) throw new Error('ArgumentError: Wrong number of arguments');
-		if (!(rect instanceof Rect)) throw RamuUtils.CustomTypeError(rect, Rect);
-		if (rect.x < 0 || rect.y < 0) throw new Error('ArgumentOutOfRangeError: The rect position cannot be negative.');
+		if(void 0 === rect || arguments.length != 1)
+			throw new Error('ArgumentError: Wrong number of arguments');
+		
+		if(Array.isArray(rect)){
+			for (let i = 0; i < rect.length; i++){
+				if(!rect[i] instanceof Rect)
+					throw RamuUtils.CustomTypeError(rect, rect);
+				
+				if (rect[i].x < 0 || rect[i].y < 0) 
+					throw new Error('ArgumentOutOfRangeError: The rect position cannot be negative.');
+				
+				this.frames.push(rect[i]);			
+			}
+				
+			return;
+		} else if(rect instanceof Rect){
+			if(!rect instanceof Rect)
+				throw RamuUtils.CustomTypeError(rect, rect);
+			
+			if (rect.x < 0 || rect.y < 0) 
+				throw new Error('ArgumentOutOfRangeError: The rect position cannot be negative.');
+			
+			this.frames.push(rect);
+			return;
+		}
 
-		this.frames.push(rect);
+		throw RamuUtils.CustomTypeError(rect, rect);
 	}
 	
 	draw(){
@@ -773,7 +796,7 @@ class SpritesheetAnimator extends GameObj{
 		spritesheetAnimation.y = this.y;
 		spritesheetAnimation.canDraw = false;
 		spritesheetAnimation.drawPriority = this.animDrawPriority;
-		Drawable.sortPriority();
+		Ramu.callSortDraw = true;
 		this.anim[nameID] = spritesheetAnimation;
 	}
 	
@@ -872,7 +895,7 @@ class Parallax extends GameObj{
 		this.left.drawPriority   = parseInt(num);
 		this.center.drawPriority = parseInt(num);
 		this.right.drawPriority  = parseInt(num);
-		Drawable.sortPriority();
+		Ramu.callSortDraw = true;
 	}
 	
 	update(){
