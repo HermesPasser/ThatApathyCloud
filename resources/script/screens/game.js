@@ -4,12 +4,13 @@ class GameScreen extends Screen{
 		GameScreen.bloodParticle = new SimpleParticle(PARTICLE_IMAGE.BLOOD, new Rect(1, 1, 1, 1), 3, particleBloodNumber);
 		GameScreen.world = new World(0,0);
 		
-		GameScreen.player = new Player(200,200);
+		GameScreen.player = new Player(50, 250);
 		GameScreen.player.updatePriority = this.updatePriority - 1;
 		
 		// Create the text gui
-		GameScreen.infodump = new Text('', Ramu.canvas.width / 2 - 30, Ramu.canvas.height - 50, 100);
+		GameScreen.infodump = new Text('', 10, Ramu.canvas.height - 50, Ramu.canvas.width - 20);
 		GameScreen.infodump.fillStyle = "white";
+		GameScreen.infodump.font = "20px sans-serif";
 		
 		Ramu.callSortUpdate = true;
 	}
