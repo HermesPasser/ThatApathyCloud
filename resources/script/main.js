@@ -1,11 +1,15 @@
 // convem botar um "loading" entre as screens
 
-// slow down ao atirar, ao inves de intanciar cada bala, usar um array com várias pré carregadas
+// som de explosão no fim?
 
-// usar ditionarys no lugar de arrays para quando for destruir o obj
+// substituir metodo destroy por um attr canDestroy? ele teria que ser chamado em algum lugar de qlqr jeito
+
+// coisas comentadas em game.js
+
+// não fazer outra coisa até resolver o maldito is not a function at destroy()
 
 Ramu.init(BASIS.SCREEN_WIDTH, BASIS.SCREEN_HEIGHT);
-// Ramu.debugMode = true;
+Ramu.debugMode = true;
 
 
 // não esquecer exit option

@@ -11,6 +11,16 @@ function loadXML(filename){
 	return req.responseXML;
 }
 
+// function updateSoundVolume(){ //100 because volume is in a rang of 0.0 .. 1.0
+	// let keys = Object.values(SOUND.BGM);
+	// for (var i = 0; i < keys.length; i++)
+		// keys[i].audio.volume = SOUND.VOLUME.BGM / 100;
+	
+	// keys = Object.values(SOUND.SFX);
+	// for (var i = 0; i < keys.length; i++)
+		// keys[i].audio.volume = SOUND.VOLUME.SFX / 100;
+// }
+
 //------------------------------|
 // Layer	Priority			|
 //------------------------------|
@@ -31,6 +41,26 @@ const SOUND = {
 	DISAPPEAR: new Audio('resources/sound/disappear.wav')
 };
 
+// novo const:
+// const SOUND = {
+	// BGM: {
+		// TITLE_MUSIC: new Ramu.Audio('resources/sound/menumusic.wav'),
+		// GAME_MUSIC:	new Ramu.Audio('resources/sound/gamemusic.wav'),
+		// END_MUSIC:   new Ramu.Audio("resources/sound/endmusic.wav")
+	// },
+	
+	// SFX: {
+		// SHOT: 	    new Ramu.Audio('resources/sound/shot.wav'),
+		// CRY: 	    new Ramu.Audio('resources/sound/cry.wav'),
+		// DISAPPEAR:   new Ramu.Audio('resources/sound/disappear.wav'),
+		// SELECT:      new Ramu.Audio('resources/sound/menusound.wav') // antigo CHANGE_OP
+	// },
+	
+	// VOLUME: {
+		// BGM: 40,
+		// SFX: 20
+	// }
+// };
 
 const ENDING_IMAGES = {
 	SPACE0: RamuUtils.getImage("resources/sprite/outerspace0.png"),

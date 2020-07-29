@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<style>
+			body {margin: 0; background-color: white;}
+			canvas {margin: 0; background-color: black;}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="resources/script/ramu-0.7.js"></script>
+		<!-- <script type="text/javascript" src="resources/1.7tests/ramu-0.7b.js"></script> -->
+		
+		<script type="text/javascript" src="resources/script/screens/screen.js"></script>
+		
+		<script type="text/javascript" src="resources/script/flash.js"></script>
+		<script type="text/javascript" src="resources/script/intro.js"></script>
+		<script type="text/javascript" src="resources/0.7tests/end.js"></script>
+		
+		<script type="text/javascript" src="resources/script/screens/splash.js"></script>
+		
+		<script type="text/javascript" src="resources/script/menu.js"></script>
+		<script type="text/javascript" src="resources/script/option.js"></script>
+		<script type="text/javascript" src="resources/script/machine.js"></script>
+		<script type="text/javascript">
+			'use strict';
+
+			// PLACEHODERS
+			const SCREEN_IMAGE = {
+				SPLASH0: Ramu.Utils.getImage("resources/sprite/logo_gladio.png"),
+				SPLASH1: Ramu.Utils.getImage("resources/sprite/logo_hermes.png"),
+				TITLE_SCREEN: Ramu.Utils.getImage('resources/sprite/title_screen.png')
+			}
+
+			const ENDING_IMAGES = {
+				SPACE0: Ramu.Utils.getImage("resources/sprite/outerspace0.png"),
+				SPACE1: Ramu.Utils.getImage("resources/sprite/outerspace1.png"),
+				PLANET: Ramu.Utils.getImage("resources/sprite/planet.png")
+			}
+			const BASIS = {
+				IMAGE: Ramu.Utils.getImage('resources/tileset/basis.png'),
+				SCREEN_WIDTH: 750,
+				SCREEN_HEIGHT: 600
+			}
+
+			const SOUND = {
+				BGM: {
+					TITLE_MUSIC: new Ramu.Audio('resources/sound/menumusic.wav'),
+					GAME_MUSIC:	 new Ramu.Audio('resources/sound/gamemusic.wav'),
+					END_MUSIC:   new Ramu.Audio("resources/sound/endmusic.wav")
+				},
+				
+				SFX: {
+					SHOT: 	     new Ramu.Audio('resources/sound/shot.wav'),
+					CRY: 	     new Ramu.Audio('resources/sound/cry.wav'),
+					DISAPPEAR:   new Ramu.Audio('resources/sound/disappear.wav'),
+					SELECT:      new Ramu.Audio('resources/sound/menusound.wav') // antigo CHANGE_OP
+				},
+				
+				VOLUME: {
+					BGM: 40,
+					SFX: 20
+				}
+			};
+			
+			// deixar transições suaves usando o flash? 
+			// fade out nas musicas?
+			
+			function updateSoundVolume(){
+				//100 because volume is in a rang of 0.0 .. 1.0				
+				let keys = Object.values(SOUND.BGM);
+				for (var i = 0; i < keys.length; i++)
+					keys[i].audio.volume = SOUND.VOLUME.BGM / 100;
+				
+				keys = Object.values(SOUND.SFX);
+				for (var i = 0; i < keys.length; i++)
+					keys[i].audio.volume = SOUND.VOLUME.SFX / 100;
+			}
+			
+			// END - PLACEHODERS	
+			
+			Ramu.init(BASIS.SCREEN_WIDTH, BASIS.SCREEN_HEIGHT);
+			Ramu.debugMode = true;
+			
+			updateSoundVolume(); // para que o som fique com o volume setado por default, fazer o mesmo no main
+
+
+			// since audio can't be played without interaction
+			// const interactext = new Text("Press 'w' to start", 10, 10, 150);
+			// const interactor = new GameObj();
+			// interactext.fillStyle = 'white'
+
+			// interactor.update = () => {
+			// 	if (keyCode.w in Ramu.lastKeysPressed) {
+					Machine.init(); // must be after init because some funcs (like centerImage) uses the canvas size
+			// 		destroyInteractor()
+			// 	}
+			// }
+			// function destroyInteractor()  {
+			// 	interactext.destroy()
+			// 	interactor.destroy()
+			// }
+		</script>
+	</body>
+</html>
