@@ -40,11 +40,11 @@ class LeftTurret extends Enemy{
 	
 	destroy(){
 		this.shootParticle.destroy();
-		delete this.shootParticle;
+		this.shootParticle = null;
 		
 		for (var i = 0; i < this.bullets.length; i++)
 			this.bullets[i].destroy();
-		delete this.bullets;
+		this.bullets = null;
 		
 		super.destroy();
 	}
