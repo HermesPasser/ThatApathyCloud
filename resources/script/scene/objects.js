@@ -1,3 +1,22 @@
+class EndObject extends SimpleRectCollisor{
+	static create(tiledXMLObject){
+		return new EndObject(tiledXMLObject.x, 
+							tiledXMLObject.y, 
+							tiledXMLObject.width, 
+							tiledXMLObject.height);
+	}
+	
+	onCollision(){		
+		for (let i = 0; i < this.collision.length; i++){
+			if (this.collision[i].tag != 'player')
+				continue;
+			
+			Machine.changeState(Machine.STATE.END);
+			break;
+		}
+	}
+}
+
 // Transfer the player to another map
 class TeleportObject extends SimpleRectCollisor{
 	static create(tiledXMLObject){

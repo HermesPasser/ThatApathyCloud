@@ -127,8 +127,9 @@ class World extends GameObj{
 			
 			for (let i = 0; i < objs.length; i++){				
 				let obj = new TiledXMLObject(objs[i]);
-
+				
 				switch(obj.name){
+					case 'end': 	   	  this.mapObjs.push(EndObject.create(obj)); break;
 					case 'enemy': 	   	  this.mapObjs.push(Enemy.create(obj)); break;
 					case 'teleport':   	  this.mapObjs.push(TeleportObject.create(obj)); break;
 					case 'infodump':   	  this.mapObjs.push(InfoDump.create(obj)); break;

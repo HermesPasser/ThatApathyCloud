@@ -25,16 +25,30 @@ const LAYER = {BELOW: 0, SAME: 1, ABOVE: 2};
 const SOUND = {
 	SHOT: 	   new Audio('resources/sound/shot.wav'),
 	CRY: 	   new Audio('resources/sound/cry.wav'),
+	END:	   new Audio('resources/sound/endmusic.wav'),
 	GAME:	   new Audio('resources/sound/gamemusic.wav'),
 	CHANGE_OP: new Audio('resources/sound/menusound.wav'),
 	DISAPPEAR: new Audio('resources/sound/disappear.wav')
 };
+
+
+const ENDING_IMAGES = {
+	SPACE0: RamuUtils.getImage("resources/sprite/outerspace0.png"),
+	SPACE1: RamuUtils.getImage("resources/sprite/outerspace1.png"),
+	PLANET: RamuUtils.getImage("resources/sprite/planet.png")
+}
 
 const PARTICLE_IMAGE = {
 	YELLOW: RamuUtils.getImage("resources/sprite/particleyellow.png"),
 	BLOOD: RamuUtils.getImage("resources/sprite/particlered.png"),
 	BLUE: RamuUtils.getImage("resources/sprite/particleblue.png")
 } 
+
+const SCREEN_IMAGE = {
+	SPLASH0: RamuUtils.getImage("resources/sprite/logo_gladio.png"),
+	SPLASH1: RamuUtils.getImage("resources/sprite/logo_hermes.png"),
+	TITLE_SCREEN: RamuUtils.getImage('resources/sprite/title_screen.png')
+}
 
 const BASIS = (function(){
 	let data = loadXML("resources/tileset/basis.xml");

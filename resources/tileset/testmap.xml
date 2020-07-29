@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-up" width="15" height="12" tilewidth="50" tileheight="50" nextobjectid="14">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-up" width="15" height="12" tilewidth="50" tileheight="50" nextobjectid="17">
  <tileset firstgid="1" source="basis.xml"/>
  <layer name="below" width="15" height="12">
   <data encoding="csv">
@@ -99,5 +99,6 @@
     <property name="turretID" type="int" value="0"/>
    </properties>
   </object>
+  <object id="14" name="end" gid="1" x="250" y="300" width="50" height="50"/>
  </objectgroup>
 </map>

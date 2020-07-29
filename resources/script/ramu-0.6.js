@@ -5,6 +5,10 @@
 // blog: gladiocitrico.blogspot.com   //
 // ---------------------------------- //
 
+// para caso alguma func seja chamada no mesmo frame que o start
+// criar um callnextframe para ela ser chamada apos o start 
+// para não quebrar tudo
+
 var gameObjs	   = [],
     objsToDraw 	   = [],
     objsToCollide  = [],
@@ -232,7 +236,7 @@ class Ramu{
 	/// Update all gameObjs in the game.
 	static update(){
 		for (var i = 0; i < gameObjs.length; i++){
-			if (!gameObjs[i]._start_was_called)
+			if (!gameObjs[i]._start_was_called || !gameObjs[i].canUpdate)
 				continue;
 			gameObjs[i].update();	
 		}
@@ -288,6 +292,7 @@ class GameObj{
 		this.height = h;
 		this.tag =  this.tag || "none";
 		this.updatePriority = updateLastPriority++;
+		this.canUpdate = true;
 		
 		GameObj.addObjt(this);
 	}
@@ -309,6 +314,11 @@ class GameObj{
 	}
 	
 	destroy(){
+		if (!this._start_was_called){
+			console.warn("The update was not called yet,")
+			return;
+		}
+		
 		for (let i = 0; i < gameObjs.length; i++){
 			if (gameObjs[i] === this){
 				gameObjs.splice(i, 1);
@@ -360,6 +370,11 @@ class Drawable extends GameObj{
 	}
 	
 	destroy(){
+		if (!this._start_was_called){
+			console.warn("The update was not called yet,")
+			return;
+		}
+		
 		super.destroy();
 		for (let i = 0; i < objsToDraw.length; i++){
 			if (objsToDraw[i] === this){
@@ -424,6 +439,11 @@ class Collisor extends Drawable{
 	}
 	
 	destroy(){
+		if (!this._start_was_called){
+			console.warn("The update was not called yet,")
+			return;
+		}
+		
 		for (let i = 0; i < objsToCollide.length; i++){
 			if (objsToCollide[i] === this){
 				objsToCollide.splice(i, 1);
@@ -574,6 +594,7 @@ class Sprite extends Drawable{
 			Ramu.ctx.imageSmoothingEnabled = false;
 			Ramu.ctx.drawImage(this.img, originX, originY, this.width, this.height);
 	}
+	
 }
 
 /// Displays an region (sprite sheet) of a image
@@ -994,20 +1015,31 @@ class Text extends Drawable {
 class SimpleParticle extends GameObj{
 	constructor(img, rect, lifeSpan, particleNumber){
 		super(rect.x, rect.y, rect.width, rect.height);
+		if (arguments.length != 4) throw new Error('ArgumentError: Wrong number of arguments');
+
 		this.particleNumber = particleNumber / 2;
 		this.particle = img;
 		this.destroyOnEnd = false;
 		this.lifeSpan = lifeSpan;
 	}
 	
-	start(){		
+	start(){
 		this.particles = [];
-		this.isOver = true
-		for (let i = 0; i < 200; i++)
+		this.isOver = true;
+		this.alreadyPlayed = false;
+		for (let i = 0; i < 200; i++){
 			this.particles[i] = new Sprite(this.particle, this.x, this.y, this.width, this.height, false);
+			this.particles[i].tag = 'particle-sprite';
+		}
 	}
 	
 	init(){
+		if (!this._start_was_called){
+			console.warn("The update was not called yet,")
+			this.start();
+			this._start_was_called = true;
+		}
+		
 		for (let i = 0; i < this.particles.length ; i++){
 			this.particles[i].canDraw = true;
 			this.particles[i].opacity = 1;
@@ -1029,10 +1061,10 @@ class SimpleParticle extends GameObj{
 	update(){
 		if (this.isOver)
 			return;
-				
+			
 		this.currentTimeToFall >= this.currentLife / 2 ? this.move(this.particleNumber) : this.move(this.particleNumber / 2);
 		this.currentLife += Ramu.time.delta;
-		
+				
 		if (this.currentLife > this.lifeSpan){
 			for (let i = 0; i < this.particles.length ; i++)
 				this.particles[i].opacity -= 0.07;
@@ -1040,6 +1072,7 @@ class SimpleParticle extends GameObj{
 		
 		if (this.particles[0].opacity <= 0){
 			this.isOver = true;
+			this.alreadyPlayed = true;
 			
 			if (this.destroyOnEnd)
 				this.destroy();
@@ -1056,10 +1089,14 @@ class SimpleParticle extends GameObj{
 	}
 	
 	destroy(){
-		for (let i = 0; i < this.particles.length ; i++){
-			this.particles[i].destroy();
-			delete this.particles[i];
-		}
+		this.canUpdate = false;
+		// for (let i = 0; i < this.particles.length; i++)
+			// this.particles[i].destroy();
+		
+		// this.particles = null;
+		// this.particle.destroy();
+		
+		this.particle = null;
 		super.destroy();
 	}
 	
