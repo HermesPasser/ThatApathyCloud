@@ -44,6 +44,12 @@ const PARTICLE_IMAGE = {
 	BLUE: RamuUtils.getImage("resources/sprite/particleblue.png")
 } 
 
+const SCREEN_IMAGE = {
+	SPLASH0: RamuUtils.getImage("resources/sprite/logo_gladio.png"),
+	SPLASH1: RamuUtils.getImage("resources/sprite/logo_hermes.png"),
+	TITLE_SCREEN: RamuUtils.getImage('resources/sprite/title_screen.png')
+}
+
 const BASIS = (function(){
 	let data = loadXML("resources/tileset/basis.xml");
 	let lines = 15, colunms = 12, tilesize = 50;
