@@ -26,6 +26,8 @@ class Bullet extends GameObj{
 		this.coll.damageTag = damageTag;
 		this.sprite.canDraw = true;
 
+		this.coll.canCollide = true;
+		
 		this.damage = damage;
 		this.direction = direction;
 		
@@ -37,6 +39,7 @@ class Bullet extends GameObj{
 	
 	disable(){
 		this.sprite.canDraw = false;
+		this.coll.canCollide = false;
 		this.isOver = true;
 	}
 	
