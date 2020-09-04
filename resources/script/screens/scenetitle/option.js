@@ -12,6 +12,7 @@ class Option extends GameObj{
 		// this.objText.font = "14px sans-serif"
 		this.addMinusButton();
 		this.addPlusButton();
+		this.tag = "Options"
 	}
 
 	addMinusButton(){
@@ -37,6 +38,7 @@ class Option extends GameObj{
 			this.opt.objText.text = this.opt.rawText + this.opt.value;
 			this.opt.onValueChange();
 		});
+		this.btnMinus.tag = "minus option button"
 	}
 	
 	addPlusButton(){
@@ -62,6 +64,7 @@ class Option extends GameObj{
 			this.opt.objText.text = this.opt.rawText + this.opt.value;
 			this.opt.onValueChange();
 		});
+		this.btnPlus.tag = "plus option button"
 	}
 	
 	onValueChange(){ } // Virtual
