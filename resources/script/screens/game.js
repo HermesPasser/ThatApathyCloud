@@ -20,17 +20,20 @@ class GameScreen extends Screen{
 	}
 	
 	input(){
-		// if (GameScreen.player.life <= 0)
-			// return;
+		if (GameScreen.player.life <= 0)
+			return;
 		
 		// da para tentar jogar um raycast nas diagonais então verificar se ele pressionou duas teclas juntos 
 		
-		// if 		(keyCode.a in Ramu.lastKeysPressed) 	  GameScreen.player.shot();
-		// if 		(keyCode.s in Ramu.lastKeysPressed) 	  GameScreen.player.disappear();	
-		// if  	(keyCode.up_arrow in Ramu.pressedKeys)    GameScreen.player.walkUp();
-		// else if (keyCode.left_arrow in Ramu.pressedKeys)  GameScreen.player.walkLeft();
-		// else if (keyCode.right_arrow in Ramu.pressedKeys) GameScreen.player.walkRight();
-		// else if (keyCode.down_arrow in Ramu.pressedKeys)  GameScreen.player.walkDown();
+		if 		(keyCode.a in Ramu.lastKeysPressed) 	  GameScreen.player.shot();
+		if 		(keyCode.s in Ramu.lastKeysPressed) 	  GameScreen.player.disappear();	
+		if  	(keyCode.up_arrow in Ramu.pressedKeys)    GameScreen.player.walkUp();
+		else if (keyCode.left_arrow in Ramu.pressedKeys)  GameScreen.player.walkLeft();
+		else if (keyCode.right_arrow in Ramu.pressedKeys) GameScreen.player.walkRight();
+		else if (keyCode.down_arrow in Ramu.pressedKeys)  GameScreen.player.walkDown();
+		// set the animation state to idle if not key is pressed
+		else GameScreen.player.machineState(false);
+		
 	}
 	
 	destroy(){

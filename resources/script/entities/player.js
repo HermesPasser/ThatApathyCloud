@@ -87,7 +87,6 @@ class Player extends CharacterBase{
 			return;
 		}
 		
-		this.machineState(false); // To set idle pose. If some arrow is pressed so will be override by the walking animation
 		this.currentTimeToShot += Ramu.time.delta;
 		this.currentTimeToDisappear += Ramu.time.delta;
 		
