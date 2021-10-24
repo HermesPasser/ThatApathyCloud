@@ -24,7 +24,7 @@ class Player extends CharacterBase{
 	
 	disappear(){	
 		if (this.currentTimeToDisappear >= this.timeToDisappear){
-			RamuUtils.playSound(SOUND.DISAPPEAR);
+			Ramu.Utils.playSound(SOUND.SFX.DISAPPEAR);
 			
 			this.disappearParticle.setPosition(this.x + this.width/2, this.y + this.height/2);
 			this.disappearParticle.init();
@@ -183,7 +183,7 @@ class Player extends CharacterBase{
 		if (this.life <= 0)
 			return;
 				
-		RamuUtils.playSound(SOUND.CRY);
+		Ramu.Utils.playSound(SOUND.SFX.DISAPPEAR);
 		let txt = new Text("Game Over", 250, 250, 100);
 		txt.fillStyle = "white";	
 

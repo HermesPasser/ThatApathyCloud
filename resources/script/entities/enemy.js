@@ -167,7 +167,7 @@ class Enemy extends CharacterBase{
 
 		this.ia();
 		
-		if (RamuUtils.isOutOfCanvas(this)){
+		if (Ramu.Utils.isOutOfCanvas(this)){
 			this.setX(400);
 			this.setY(400);
 		}
@@ -176,7 +176,7 @@ class Enemy extends CharacterBase{
 	}
 	
 	die(){
-		RamuUtils.playSound(SOUND.CRY);
+		Ramu.Utils.playSound(SOUND.SFX.CRY);
 		this.showBlood();
 		this.setCanDraw(false);
 		this.mainCol.destroy()
