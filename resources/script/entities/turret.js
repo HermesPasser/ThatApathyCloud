@@ -81,7 +81,7 @@ class LeftTurret extends Enemy{
 		let distance = RamuMath.distance(GameScreen.player, this);
 				
 		// Shot if the player is in a range of 4 floor tiles
-		if (!(distance > 200 && distance < 800) && !GameScreen.player.isInvisible)
+		if (!(distance > 200 && distance < 800) && !GameScreen.player.isInvisible && !GameScreen.player.life <= 0)
 			this.shot();
 	}
 	
