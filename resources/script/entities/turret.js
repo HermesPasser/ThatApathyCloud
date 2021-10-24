@@ -18,7 +18,8 @@ class LeftTurret extends Enemy{
 		// Bullets
 		this.currentBullets = 0;
 		this.bullets = new Array(5).fill(new Bullet(0, 0, false));
-		
+		this.timeToShot = 1;
+
 		// To set the body of turret in the position instead of barrel
 		this.setX(this.x - 33);
 		this.width = 50;
