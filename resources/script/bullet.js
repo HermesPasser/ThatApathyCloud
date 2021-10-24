@@ -43,6 +43,13 @@ class Bullet extends GameObj{
 		this.isOver = true;
 	}
 	
+	hit() {
+		if (this.destroyOnCollision)
+			this.destroy();
+		else 
+			this.disable();
+	}
+
 	setOnCollision(){
 		let ref = this;
 		this.coll.onCollision = function(){			
@@ -52,13 +59,9 @@ class Bullet extends GameObj{
 				if (this.collision[i].tag === this.damageTag){
 					this.collision[i].applyDamage(ref.damage);
 					
-					if (ref.destroyOnCollision)
-						ref.destroy();
-					else ref.disable();
+					ref.hit();
 				} else if (this.collision[i].tag === "wall")				
-					if (ref.destroyOnCollision)
-						ref.destroy();
-					else ref.disable();
+					ref.hit();
 			}
 		}	
 	}
@@ -95,10 +98,7 @@ class Bullet extends GameObj{
 		// Destroy if is out of the canvas
 		if (this.x < -this.size || this.x > Ramu.canvas.width ||
 			this.y < -this.size || this.y > Ramu.canvas.height){
-			
-			if (this.destroyOnCollision)
-				this.destroy();
-			else this.disable();
+			this.hit();
 		}
 	}
 }
