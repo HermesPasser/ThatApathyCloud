@@ -1,3 +1,7 @@
+sound/
+.vscode/
+
 TODO.txt
 *.wav
 *.bat
+*.log
