@@ -55,12 +55,12 @@ class Bullet extends GameObj{
 		this.coll.onCollision = function(){			
 			
 			// Add damage
-			for (var i = 0; i < this.collision.length; i++){
-				if (this.collision[i].tag === this.damageTag){
-					this.collision[i].applyDamage(ref.damage);
+			for (let entity of this.collision){
+				if (entity.tag === this.damageTag){
+					entity.applyDamage(ref.damage);
 					
 					ref.hit();
-				} else if (this.collision[i].tag === "wall")				
+				} else if (entity.tag === "wall")				
 					ref.hit();
 			}
 		}	
